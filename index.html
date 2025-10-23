@@ -33,7 +33,6 @@
                         'slide-in-left': 'slideInLeft 0.8s ease-out',
                         'slide-in-right': 'slideInRight 0.8s ease-out',
                         'fade-in-up': 'fadeInUp 0.8s ease-out',
-                         /* ATUALIZADO: Adicionada animação bounce */
                         'bounce': 'bounce 2s infinite',
                     },
                     keyframes: {
@@ -41,7 +40,6 @@
                         slideInLeft: { 'from': { opacity: 0, transform: 'translateX(-30px)' }, 'to': { opacity: 1, transform: 'translateX(0)' } },
                         slideInRight: { 'from': { opacity: 0, transform: 'translateX(30px)' }, 'to': { opacity: 1, transform: 'translateX(0)' } },
                         fadeInUp: { 'from': { opacity: 0, transform: 'translateY(20px)' }, 'to': { opacity: 1, transform: 'translateY(0)' } },
-                         /* ATUALIZADO: Keyframes da animação bounce */
                         bounce: {
                              '0%, 100%': { transform: 'translateY(5px)' },
                              '50%': { transform: 'translateY(-5px)' },
@@ -70,11 +68,76 @@
         .indicator { width: 10px; height: 10px; border-radius: 50%; background-color: #374151; transition: all 0.3s ease; }
         .indicator.active { background-color: #edc77c; width: 24px; border-radius: 9999px; }
         /* Estilos para o seletor de idioma */
-        details summary::-webkit-details-marker { display:none; } /* Esconde a seta padrão */
-        details summary { list-style: none; } /* Esconde a seta padrão (Firefox) */
-        /* Animação fade-in para o dropdown */
+        details summary::-webkit-details-marker { display:none; }
+        details summary { list-style: none; }
         @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         details[open] > div { animation: fadeInDropdown 0.3s ease-out; }
+
+        /* Efeito Glass */
+        .glass {
+            background-color: rgba(55, 65, 81, 0.1); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(237, 199, 124, 0.2); 
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+        }
+
+        /* Efeito Glow Gold para ícones e pontos da timeline*/
+        .icon-container { position: relative; width: 64px; height: 64px; margin: 0 auto 1rem; transform-style: preserve-3d; } 
+        .glow-gold { 
+            position: absolute; inset: 0; border-radius: 0.75rem; 
+            background: linear-gradient(to right bottom, rgba(237, 199, 124, 0.2), rgba(141, 109, 62, 0.2)); 
+            box-shadow: 0 0 15px 5px rgba(237, 199, 124, 0.3); 
+            transform: translateZ(10px); 
+            transition: box-shadow 0.3s ease;
+        }
+        .icon-wrapper { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #edc77c; }
+         /* Ponto da timeline */
+        .timeline-dot {
+            width: 16px; height: 16px; border-radius: 50%; background: #edc77c; /* accent-gold */
+             box-shadow: 0 0 15px 5px rgba(237, 199, 124, 0.5); /* glow */
+             flex-shrink: 0; /* Impede que encolha */
+        }
+        
+        /* Animação de Scroll para Cards */
+        .animate-card-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease; 
+        }
+        .animate-card-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efeito de hover com sombra dourada e subida SOMENTE para .glass */
+        .glass:hover {
+             box-shadow: 0 10px 25px -5px rgba(237, 199, 124, 0.3); /* Sombra dourada */
+             transform: translateY(-5px); /* Leve subida */
+        }
+
+        /* Efeito de hover SOMENTE de subida para o texto em #nossa-historia */
+        #nossa-historia .grid > div:first-child.animate-card-on-scroll:hover { 
+             transform: translateY(-5px); /* Leve subida */
+             box-shadow: none; /* Garante que não tenha sombra */
+        }
+
+        /* Efeito de hover COMPLETO para o video em #nossa-historia */
+        #nossa-historia .grid > div:last-child.animate-card-on-scroll:hover { 
+             box-shadow: 0 10px 25px -5px rgba(237, 199, 124, 0.3); /* Sombra dourada */
+             transform: translateY(-5px); /* Leve subida */
+        }
+        
+        /* Hover do brilho do ícone apenas para cards .glass */
+        .glass:hover .glow-gold { 
+            box-shadow: 0 0 25px 8px rgba(237, 199, 124, 0.5); /* Brilho mais intenso no hover */
+        }
+        
+        /* Efeito de hover SOMENTE de subida para os números em #numeros-rtsc */
+        #numeros-rtsc .animate-card-on-scroll:hover { 
+             transform: translateY(-5px); /* Leve subida */
+             box-shadow: none; /* Garante que não tenha sombra */
+        }
+
     </style>
 </head>
 <body class="bg-primary-bg text-text-white font-sans overflow-x-hidden">
@@ -87,47 +150,40 @@
 
     <!-- ======= Header ======= -->
     <header class="sticky top-0 z-30 backdrop-blur-sm border-b border-border-gray">
-        <!-- Container principal: Adicionado 'relative' para contexto de posição -->
-        <div class="container relative mx-auto max-w-7xl px-4 py-4 flex flex-col items-center md:flex-row md:justify-between">
+        <!-- Container principal: Revertido para a estrutura original -->
+        <div class="container mx-auto max-w-7xl px-4 py-4 flex flex-col items-center md:flex-row md:justify-between">
             
-            <!-- Logo: Centralizado no mobile (pelo flex do pai), à esquerda no desktop -->
-             <div class="w-full flex justify-center md:w-auto md:flex-shrink-0">
+             <!-- ATUALIZADO: Div interna para Logo + Seletor (Mobile) -->
+             <div class="relative w-full flex justify-center items-center md:w-auto md:justify-start">
+                 <!-- Logo -->
                  <img src="https://d335luupugsy2.cloudfront.net/cms/files/691549/1693434942/$20c7zqr5hod" alt="RTSC Logo" class="h-12 w-auto">
+                 
+                 <!-- Seletor de Idioma -->
+                 <!-- Mobile: absolute right-0 top-1/2 -translate-y-1/2 -->
+                 <!-- Desktop: md:relative md:ml-6 (agora dentro da nav) -->
+                 <details class="absolute right-0 top-1/2 -translate-y-1/2 md:relative md:top-auto md:right-auto md:translate-y-0 md:ml-6" id="lang-details">
+                    <summary class="flex items-center gap-1 cursor-pointer list-none text-xs sm:text-sm font-medium text-text-white hover:text-accent-gold transition-colors" title="Selecionar Idioma">
+                        <i data-lucide="globe" class="w-4 h-4 text-accent-gold"></i>
+                        <span id="current-lang-label" class="font-bold">PT</span>
+                    </summary>
+                    <div class="absolute right-0 top-full mt-2 w-36 bg-secondary-bg border border-border-gray rounded-lg shadow-xl z-50 overflow-hidden origin-top-right">
+                        <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="pt"> <span data-i18n="lang_pt">Português</span> (PT) </button>
+                        <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="en"> <span data-i18n="lang_en">Inglês</span> (EN) </button>
+                        <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="es"> <span data-i18n="lang_es">Espanhol</span> (ES) </button>
+                        <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="zh"> <span data-i18n="lang_zh">Mandarim</span> (ZH) </button>
+                    </div>
+                 </details>
              </div>
-
-            <!-- Seletor de Idioma -->
-            <!-- Mobile: absolute top-4 right-4 -->
-            <!-- Desktop: md:relative md:top-auto md:right-auto md:ml-6 -->
-            <details class="absolute top-4 right-4 md:relative md:top-auto md:right-auto md:ml-6" id="lang-details">
-                <summary class="flex items-center gap-1 cursor-pointer list-none text-xs sm:text-sm font-medium text-text-white hover:text-accent-gold transition-colors" title="Selecionar Idioma">
-                    <i data-lucide="globe" class="w-4 h-4 text-accent-gold"></i>
-                    <span id="current-lang-label" class="font-bold">PT</span>
-                </summary>
-                <!-- Menu Dropdown (z-50 para ficar acima de outros elementos do header) -->
-                <div class="absolute right-0 top-full mt-2 w-36 bg-secondary-bg border border-border-gray rounded-lg shadow-xl z-50 overflow-hidden origin-top-right">
-                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="pt">
-                        <span data-i18n="lang_pt">Português</span> (PT)
-                    </button>
-                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="en">
-                        <span data-i18n="lang_en">Inglês</span> (EN)
-                    </button>
-                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="es">
-                        <span data-i18n="lang_es">Espanhol</span> (ES)
-                    </button>
-                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="zh">
-                        <span data-i18n="lang_zh">Mandarim</span> (ZH)
-                    </button>
-                </div>
-            </details>
             
             <!-- Navegação -->
             <!-- Mobile: w-full flex justify-center mt-4 -->
-            <!-- Desktop: md:w-auto md:mt-0 md:ml-auto (para ir para a direita, após o seletor relativo) -->
+            <!-- Desktop: md:w-auto md:mt-0 md:ml-auto -->
             <nav class="w-full flex items-center justify-center gap-4 md:gap-6 mt-4 md:mt-0 md:w-auto md:ml-auto">
                 <a href="#nossa-historia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_who_we_are">Quem somos</a>
                 <a href="#area-atuacao" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_area">Área de atuação</a>
                 <a href="#midia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_media">Na Mídia</a>
                 <a href="#contato" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_contact">Contato</a>
+                <!-- Seletor de Idioma movido para a div acima no mobile -->
             </nav>
         </div>
     </header>
@@ -138,14 +194,12 @@
         <div class="absolute inset-0 bg-primary-bg/50 z-0"></div>
         <div id="hero-scroll-mask" class="absolute inset-0 bg-primary-bg z-10 pointer-events-none" style="opacity: 0;"></div>
         <div id="hero-text-content" class="relative z-15 container mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
-            <!-- ATUALIZADO: Dividido em spans com data-i18n, mantendo a estrutura original -->
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-8">
                 <span data-i18n="hero_title_part1">Somos uma holding com foco no </span>
                 <span class="gradient-text" data-i18n="hero_title_part2">desenvolvimento do setor Imobiliário</span>
                 <span data-i18n="hero_title_part3"> e do Turismo no Brasil.</span>
             </h1>
             <p class="text-base md:text-lg text-text-gray max-w-2xl mb-12 mx-auto" data-i18n="hero_subtitle">Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.</p>
-            <!-- ATUALIZADO: Adicionada classe 'animate-bounce' -->
             <a href="#nossa-historia" class="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-accent-gold-dark to-accent-gold text-black font-bold rounded-full cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-accent-gold/30 animate-bounce" data-i18n="hero_button">
                 CONHEÇA A RTSC
             </a>
@@ -156,34 +210,84 @@
         <!-- ======= History Section ======= -->
         <section id="nossa-historia" class="container mx-auto max-w-7xl py-16 md:py-24 px-4 scroll-mt-28 md:scroll-mt-20">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="animate-slide-in-left">
+                <!-- Adicionado 'animate-card-on-scroll' -->
+                <div class="animate-card-on-scroll">
                     <h2 class="text-3xl md:text-4xl font-black mb-4"> <span data-i18n="history_title_part1">Nossa</span> <span class="gradient-text" data-i18n="history_title_part2">História</span></h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mb-10"></div>
                     <p class="text-base md:text-lg text-text-gray leading-relaxed" data-i18n="history_text">
                         Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.
                     </p>
                 </div>
-                <div class="relative w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-lg animate-slide-in-right border-4 border-border-gray">
+                <!-- Adicionado 'animate-card-on-scroll' e delay -->
+                <div class="w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-lg border-4 border-border-gray animate-card-on-scroll delay-100">
                     <video class="w-full h-full object-cover object-center" autoplay muted loop playsinline> <source src="imagens/Nossa história (1).mp4" type="video/mp4"> </video>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
             </div>
         </section>
 
+        <!-- ======= Numbers Section (ALTERADA para Timeline Mobile) ======= -->
+        <section id="numeros-rtsc" class="py-16 md:py-32 px-4">
+             <div class="container mx-auto max-w-4xl relative">
+                 <div class="text-center mb-16 md:mb-24">
+                     <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="numbers_title_part1">Números</span> <span class="gradient-text" data-i18n="numbers_title_part2">da RTSC</span></h2>
+                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+                 </div>
+                 <!-- Linha central da timeline (visível sempre) -->
+                 <div class="block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent-gold/50 to-transparent" style="transform: translateX(-50%);"></div>
+                 
+                 <div class="space-y-8 md:space-y-16">
+                     <!-- Item 1: Ativos -->
+                     <div class="flex flex-row items-center gap-4 md:gap-8">
+                         <div class="w-1/2 text-right">
+                            <div class="p-4 animate-card-on-scroll text-right">
+                                <h4 class="text-3xl md:text-5xl font-black gradient-text mb-1 md:mb-2" data-i18n="count_assets_value">+10 bi</h4>
+                                <p class="text-xs md:text-base text-text-gray" data-i18n="count_assets_desc">em ativos sob custódia</p>
+                            </div>
+                         </div>
+                         <div class="block timeline-dot"></div>
+                         <div class="w-1/2 block"></div>
+                     </div>
+
+                     <!-- Item 2: Colaboradores -->
+                     <div class="flex flex-row-reverse items-center gap-4 md:gap-8">
+                          <div class="w-1/2 text-left">
+                            <div class="p-4 animate-card-on-scroll delay-100 text-left">
+                                <h4 class="text-3xl md:text-5xl font-black gradient-text mb-1 md:mb-2" data-i18n="count_collaborators_value">+1.000</h4>
+                                <p class="text-xs md:text-base text-text-gray" data-i18n="count_collaborators_desc">colaboradores</p>
+                            </div>
+                          </div>
+                         <div class="block timeline-dot"></div>
+                         <div class="w-1/2 block"></div>
+                     </div>
+
+                     <!-- Item 3: Investidores -->
+                     <div class="flex flex-row items-center gap-4 md:gap-8">
+                         <div class="w-1/2 text-right">
+                            <div class="p-4 animate-card-on-scroll delay-200 text-right">
+                                <h4 class="text-3xl md:text-5xl font-black gradient-text mb-1 md:mb-2" data-i18n="count_investors_value">+500 mil</h4>
+                                <p class="text-xs md:text-base text-text-gray" data-i18n="count_investors_desc">investidores</p>
+                            </div>
+                         </div>
+                         <div class="block timeline-dot"></div>
+                         <div class="w-1/2 block"></div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
         <!-- ======= About Section ======= -->
-        <!-- ATUALIZADO: Removido container da section, adicionado px-0 -->
         <section id="sobre-rtsc" class="relative py-16 md:py-24 px-0">
              <div id="about-video-anim-wrapper" class="absolute inset-0 z-0 overflow-hidden">
                  <div id="about-video-anim-container" 
                       class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 scale-0 rotate-0 opacity-0 transition-transform duration-500 ease-out transition-opacity duration-500 ease-out">
-                    <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> <!-- Removido rounded e border -->
+                    <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> 
                         <video class="w-full h-full object-cover object-top" autoplay muted loop playsinline> <source src="imagens/Sobre a RTSC (1).mp4" type="video/mp4"> </video>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     </div>
                  </div>
             </div>
 
-            <!-- ATUALIZADO: Adicionado container ao conteúdo -->
             <div class="relative z-10 container mx-auto max-w-7xl px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="about_title_part1">Sobre a</span> <span class="gradient-text" data-i18n="about_title_part2">RTSC</span></h2>
@@ -191,29 +295,34 @@
                 </div>
                 <div> 
                     <div class="hidden lg:grid grid-cols-4 gap-8">
-                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                        <div class="glass rounded-lg p-6 text-center animate-card-on-scroll">
+                             <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="users" class="w-8 h-8"></i></div> </div>
                             <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card1_title">Quem Somos</h3>
                             <p class="text-sm text-text-gray" data-i18n="about_card1_desc">Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.</p>
                         </div>
-                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-100 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                        <div class="glass rounded-lg p-6 text-center animate-card-on-scroll delay-100">
+                             <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="lightbulb" class="w-8 h-8"></i></div> </div>
                             <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card2_title">Inovação</h3>
                             <p class="text-sm text-text-gray" data-i18n="about_card2_desc">Um hub de inovação, com vocação para acelerar negócios arrojados e transformadores.</p>
                         </div>
-                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-200 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                        <div class="glass rounded-lg p-6 text-center animate-card-on-scroll delay-200">
+                             <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="rocket" class="w-8 h-8"></i></div> </div>
                             <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card3_title">Empreendedor</h3>
                             <p class="text-sm text-text-gray" data-i18n="about_card3_desc">Um grupo empreendedor pioneiro, desbravador, versátil, sempre em busca dos melhores resultados.</p>
                         </div>
-                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-300 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                        <div class="glass rounded-lg p-6 text-center animate-card-on-scroll delay-300">
+                             <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="briefcase-business" class="w-8 h-8"></i></div> </div>
                             <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card4_title">Gestão</h3>
                             <p class="text-sm text-text-gray" data-i18n="about_card4_desc">Uma gestora de novos negócios, com foco na transparência e na segurança.</p>
                         </div>
                     </div>
-                    <div id="about-carousel-card" class="lg:hidden bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 p-4 rounded-xl min-h-[200px] flex flex-col justify-between animate-fade-in-up">
+                    <div id="about-carousel-card" class="glass lg:hidden rounded-xl p-4 min-h-[250px] flex flex-col justify-between animate-card-on-scroll text-center">
                         <div>
-                            <h3 id="about-carousel-title" class="text-2xl font-bold text-accent-gold mb-6" data-i18n="about_mobile_card_title">Carregando...</h3>
-                            <p id="about-carousel-desc" class="text-base text-text-gray" data-i18n="about_mobile_card_desc">Carregando...</p>
+                             <div class="icon-container"> <div class="glow-gold"></div> <div id="about-carousel-icon-wrapper" class="icon-wrapper"><i data-lucide="users" class="w-8 h-8"></i></div> </div>
+                            <h3 id="about-carousel-title" class="text-xl font-bold text-accent-gold mb-4" data-i18n="about_mobile_card_title">Carregando...</h3>
+                            <p id="about-carousel-desc" class="text-sm text-text-gray" data-i18n="about_mobile_card_desc">Carregando...</p>
                         </div>
-                        <div class="flex items-center justify-between mt-8">
+                        <div class="flex items-center justify-between mt-6">
                             <button id="about-carousel-prev" class="carousel-button" aria-label="Slide anterior">←</button>
                             <div id="about-carousel-indicators" class="flex gap-2"></div>
                             <button id="about-carousel-next" class="carousel-button" aria-label="Próximo slide">→</button>
@@ -230,23 +339,26 @@
                 <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up">
-                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="mission_title">Missão</h3>
-                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                <div class="glass rounded-lg p-4 md:p-8 text-center animate-card-on-scroll">
+                     <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="target" class="w-8 h-8"></i></div> </div>
+                    <h3 class="text-lg md:text-2xl text-accent-gold font-bold mb-4" data-i18n="mission_title">Missão</h3>
+                    <ul class="space-y-2 text-text-gray text-xs md:text-sm list-none p-0">
                         <li data-i18n="mission_item1">• Impulsionar o capital humano e organizacional de forma sustentável.</li>
                         <li data-i18n="mission_item2">• Gerar valor e desenvolvimento através de investimentos no setor imobiliário.</li>
                     </ul>
                 </div>
-                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up delay-100">
-                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="vision_title">Visão</h3>
-                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                <div class="glass rounded-lg p-4 md:p-8 text-center animate-card-on-scroll delay-100">
+                     <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="eye" class="w-8 h-8"></i></div> </div>
+                    <h3 class="text-lg md:text-2xl text-accent-gold font-bold mb-4" data-i18n="vision_title">Visão</h3>
+                    <ul class="space-y-2 text-text-gray text-xs md:text-sm list-none p-0">
                         <li data-i18n="vision_item1">• Ser a holding de referência em investimentos imobiliários e turísticos.</li>
                         <li data-i18n="vision_item2">• Promover transformação positiva na economia brasileira.</li>
                     </ul>
                 </div>
-                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up delay-200">
-                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="values_title">Valores</h3>
-                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                <div class="glass rounded-lg p-4 md:p-8 text-center animate-card-on-scroll delay-200">
+                     <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="gem" class="w-8 h-8"></i></div> </div>
+                    <h3 class="text-lg md:text-2xl text-accent-gold font-bold mb-4" data-i18n="values_title">Valores</h3>
+                    <ul class="space-y-2 text-text-gray text-xs md:text-sm list-none p-0">
                         <li data-i18n="values_item1">• Transparência e integridade em todas as operações.</li>
                         <li data-i18n="values_item2">• Inovação contínua e excelência nos resultados.</li>
                     </ul>
@@ -269,14 +381,14 @@
                     <h2 class="text-3xl md:text-4xl font-black mb-4 whitespace-nowrap"><span data-i18n="areas_title_part1">Áreas de</span> <span class="gradient-text" data-i18n="areas_title_part2">Atuação</span></h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
-                <div id="carousel-card" class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 p-6 md:p-12 rounded-xl min-h-[300px] flex flex-col justify-between animate-fade-in-up delay-100">
+                <div id="carousel-card" class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-xl p-6 md:p-12 min-h-[350px] flex flex-col justify-between animate-card-on-scroll delay-100 text-center">
                     <div>
                         <h3 id="carousel-title" class="text-2xl md:text-3xl font-bold text-accent-gold mb-6" data-i18n="area_carousel_title">Carregando...</h3>
-                        <p id="carousel-desc" class="text-base md:text-lg text-text-gray max-w-3xl" data-i18n="area_carousel_desc">Carregando...</p>
+                        <p id="carousel-desc" class="text-base md:text-lg text-text-gray max-w-3xl mx-auto" data-i18n="area_carousel_desc">Carregando...</p>
                     </div>
                     <div class="flex items-center justify-between mt-8">
                         <button id="carousel-prev" class="carousel-button" aria-label="Slide anterior">←</button>
-                        <div id="carousel-indicators" class="flex gap-2"></div>
+                        <div id="carousel-indicators" class="flex gap-2 justify-center flex-grow"></div>
                         <button id="carousel-next" class="carousel-button" aria-label="Próximo slide">→</button>
                     </div>
                 </div>
@@ -291,20 +403,20 @@
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up">
-                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card1_title">B3 registra alta expressiva de investidores por CPF</h3>
-                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card1_desc">Saiba mais sobre o crescimento do mercado de investimentos no Brasil.</p>
-                        <a href="https://www.terra.com.br/noticias/b3-registra-alta-expressiva-de-investidores-por-cpf,d8b11b525430093f78d385f1ea1e88f7vkkwnors.html#:~:text=Uma%20recente%20pesquisa%20publicada%20pela,individuais%20de%20negocia%C3%A7%C3%A3o%20dos%20investidores" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll">
+                         <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="newspaper" class="w-8 h-8"></i></div> </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card1_title">B3 registra alta expressiva de investidores por CPF</h3>
+                        <a href="https://www.terra.com.br/noticias/b3-registra-alta-expressiva-de-investidores-por-cpf,d8b11b525430093f78d385f1ea1e88f7vkkwnors.html#:~:text=Uma%20recente%20pesquisa%20publicada%20pela,individuais%20de%20negocia%C3%A7%C3%A3o%20dos%20investidores" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
-                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up delay-100">
-                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card2_title">Fundos imobiliários são uma boa opção?</h3>
-                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card2_desc">Entenda como os fundos imobiliários funcionam e seus benefícios.</p>
-                        <a href="https://valor.globo.com/patrocinado/dino/noticia/2023/06/01/fundos-imobiliarios-sao-uma-boa-opcao-de-investimento.ghtml" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll delay-100">
+                         <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="radio" class="w-8 h-8"></i></div> </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card2_title">Fundos imobiliários são uma boa opção?</h3>
+                        <a href="https://valor.globo.com/patrocinado/dino/noticia/2023/06/01/fundos-imobiliarios-sao-uma-boa-opcao-de-investimento.ghtml" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
-                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up delay-200">
-                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card3_title">Queda da Selic inicia um novo ciclo na economia</h3>
-                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card3_desc">Conheça o impacto da redução da taxa Selic no mercado imobiliário.</p>
-                        <a href="https://www.terra.com.br/noticias/queda-da-selic-inicia-um-novo-ciclo-na-economia,3405c90b3bb421738de333f4a574aef0q0i0zwlj.html" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll delay-200">
+                         <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="tv" class="w-8 h-8"></i></div> </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card3_title">Queda da Selic inicia um novo ciclo na economia</h3>
+                        <a href="https://www.terra.com.br/noticias/queda-da-selic-inicia-um-novo-ciclo-na-economia,3405c90b3bb421738de333f4a574aef0q0i0zwlj.html" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -319,18 +431,21 @@
                 </div>
                 <div class="max-w-2xl mx-auto">
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <a href="tel:+551135788007" class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1 no-underline">
-                            <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_phone_title">Telefone</h3>
-                            <p class="text-sm font-bold text-gray-900">+55 (11) 3578-8007</p>
+                        <a href="tel:+551135788007" class="glass rounded-lg p-3 text-center no-underline animate-card-on-scroll">
+                             <div class="icon-container !w-10 !h-10 !mb-2"> <div class="glow-gold !rounded-md"></div> <div class="icon-wrapper"><i data-lucide="phone" class="w-5 h-5"></i></div> </div>
+                            <h3 class="text-xs font-bold text-accent-gold mb-1 uppercase tracking-wider" data-i18n="contact_phone_title">Telefone</h3>
+                            <p class="text-sm font-bold text-text-gray">+55 (11) 3578-8007</p>
                         </a>
-                        <a href="mailto:contato@rtsc.com.br" class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1 no-underline">
-                            <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_email_title">E-mail</h3>
-                            <p class="text-sm font-bold text-gray-900 break-words">contato@rtsc.com.br</p>
+                        <a href="mailto:contato@rtsc.com.br" class="glass rounded-lg p-3 text-center no-underline animate-card-on-scroll delay-100">
+                              <div class="icon-container !w-10 !h-10 !mb-2"> <div class="glow-gold !rounded-md"></div> <div class="icon-wrapper"><i data-lucide="mail" class="w-5 h-5"></i></div> </div>
+                            <h3 class="text-xs font-bold text-accent-gold mb-1 uppercase tracking-wider" data-i18n="contact_email_title">E-mail</h3>
+                            <p class="text-sm font-bold text-text-gray break-words">contato@rtsc.com.br</p>
                         </a>
                     </div>
-                    <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1">
-                        <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_address_title">Endereço</h3>
-                        <p class="text-xs font-bold text-gray-900" data-i18n="contact_address_text">Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000</p>
+                    <div class="glass rounded-lg p-3 text-center animate-card-on-scroll delay-200">
+                        <div class="icon-container !w-10 !h-10 !mb-2"> <div class="glow-gold !rounded-md"></div> <div class="icon-wrapper"><i data-lucide="map-pin" class="w-5 h-5"></i></div> </div>
+                        <h3 class="text-xs font-bold text-accent-gold mb-1 uppercase tracking-wider" data-i18n="contact_address_title">Endereço</h3>
+                        <p class="text-xs font-bold text-text-gray" data-i18n="contact_address_text">Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000</p>
                     </div>
                 </div>
             </div>
@@ -347,6 +462,8 @@
         // --- Dados para Carrosséis ---
         let carouselIndex = 0;
         let aboutCarouselIndex = 0;
+        const areaIcons = ['landmark', 'trending-up', 'shield-check', 'home', 'building']; 
+        const aboutIcons = ['users', 'lightbulb', 'rocket', 'briefcase-business'];
 
         // --- Dados de Tradução ---
         const translations = {
@@ -356,6 +473,10 @@
                 'hero_subtitle': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.', 'hero_button': 'CONHEÇA A RTSC',
                 'history_title_part1': 'Nossa', 'history_title_part2': 'História',
                 'history_text': 'Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.',
+                 'numbers_title_part1': 'Números', 'numbers_title_part2': 'da RTSC', 
+                'count_assets_value': '+10 bi', 'count_assets_desc': 'em ativos sob custódia', 
+                'count_collaborators_value': '+1.000', 'count_collaborators_desc': 'colaboradores', 
+                'count_investors_value': '+500 mil', 'count_investors_desc': 'investidores', 
                 'about_title_part1': 'Sobre a', 'about_title_part2': 'RTSC',
                 'about_card1_title': 'Quem Somos', 'about_card1_desc': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.',
                 'about_card2_title': 'Inovação', 'about_card2_desc': 'Um hub de inovação, com vocação para acelerar negócios arrojados e transformadores.',
@@ -369,16 +490,15 @@
                 'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Atuação',
                 'area_carousel_title': '...', 'area_carousel_desc': '...', // Será preenchido dinamicamente
                 'media_title_part1': 'Na', 'media_title_part2': 'Mídia',
-                'media_card1_title': 'B3 registra alta expressiva de investidores por CPF', 'media_card1_desc': 'Saiba mais sobre o crescimento do mercado de investimentos no Brasil.',
-                'media_card2_title': 'Fundos imobiliários são uma boa opção?', 'media_card2_desc': 'Entenda como os fundos imobiliários funcionam e seus benefícios.',
-                'media_card3_title': 'Queda da Selic inicia um novo ciclo na economia', 'media_card3_desc': 'Conheça o impacto da redução da taxa Selic no mercado imobiliário.',
+                'media_card1_title': 'B3 registra alta expressiva de investidores por CPF', 'media_card1_desc': '', 
+                'media_card2_title': 'Fundos imobiliários são uma boa opção?', 'media_card2_desc': '', 
+                'media_card3_title': 'Queda da Selic inicia um novo ciclo na economia', 'media_card3_desc': '', 
                 'media_card_link': 'Saiba Mais &rarr;',
                 'contact_title_part1': 'Entre em', 'contact_title_part2': 'Contato',
                 'contact_phone_title': 'Telefone', 'contact_email_title': 'E-mail', 'contact_address_title': 'Endereço',
                 'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000',
                 'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos os direitos reservados.',
                 'lang_pt': 'Português', 'lang_en': 'Inglês', 'lang_es': 'Espanhol', 'lang_zh': 'Mandarim',
-                 // Traduções dos carrosséis
                 'area_0_title': 'Private Equity', 'area_0_desc': 'Estruturas que investem em empreendimentos diversos, desde projetos em construção a operações consolidadas com foco na indústria hoteleira, como hotéis, resorts e parques.',
                 'area_1_title': 'Gestão de Investimentos', 'area_1_desc': 'Veículos que conectam o setor imobiliário a investidores de todos os portes, incluindo milhares de pessoas físicas que ajudam a financiar o setor por meio de fundos imobiliários.',
                 'area_2_title': 'Securitização e Garantias', 'area_2_desc': 'Soluções financeiras inovadoras que estruturam e garantem operações imobiliárias, facilitando o acesso ao crédito e viabilizando novos projetos.',
@@ -395,6 +515,10 @@
                 'hero_subtitle': 'A holding company that brings together companies operating in various areas, with a focus on tourism.', 'hero_button': 'DISCOVER RTSC',
                 'history_title_part1': 'Our', 'history_title_part2': 'History',
                 'history_text': 'Our history began in 2014, and since then, we have never stopped seeking opportunities with sustainable development. We promote real economic impact in all regions of Brazil, generating innovative businesses and opening new investment opportunities.',
+                 'numbers_title_part1': 'RTSC', 'numbers_title_part2': 'NUMBERS',
+                'count_assets_value': '+10 bn', 'count_assets_desc': 'in assets under custody',
+                'count_collaborators_value': '+1,000', 'count_collaborators_desc': 'collaborators',
+                'count_investors_value': '+500k', 'count_investors_desc': 'investors',
                 'about_title_part1': 'About', 'about_title_part2': 'RTSC',
                 'about_card1_title': 'Who We Are', 'about_card1_desc': 'A holding company that brings together companies operating in various areas, with a focus on tourism.',
                 'about_card2_title': 'Innovation', 'about_card2_desc': 'An innovation hub dedicated to accelerating bold and transformative businesses.',
@@ -408,9 +532,9 @@
                 'areas_title_part1': 'Areas of', 'areas_title_part2': 'Operation',
                 'area_carousel_title': '...', 'area_carousel_desc': '...',
                 'media_title_part1': 'In The', 'media_title_part2': 'Media',
-                'media_card1_title': 'B3 registers significant increase in individual investors', 'media_card1_desc': 'Learn more about the growth of the investment market in Brazil.',
-                'media_card2_title': 'Are real estate funds a good option?', 'media_card2_desc': 'Understand how real estate funds work and their benefits.',
-                'media_card3_title': 'Selic rate drop starts a new economic cycle', 'media_card3_desc': 'Learn about the impact of the Selic rate reduction on the real estate market.',
+                'media_card1_title': 'B3 registers significant increase in individual investors', 'media_card1_desc': '',
+                'media_card2_title': 'Are real estate funds a good option?', 'media_card2_desc': '',
+                'media_card3_title': 'Selic rate drop starts a new economic cycle', 'media_card3_desc': '',
                 'media_card_link': 'Learn More &rarr;',
                 'contact_title_part1': 'Get in', 'contact_title_part2': 'Touch',
                 'contact_phone_title': 'Phone', 'contact_email_title': 'Email', 'contact_address_title': 'Address',
@@ -434,6 +558,10 @@
                 'hero_subtitle': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.', 'hero_button': 'CONOZCA RTSC',
                 'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
                 'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas las regiones de Brasil, generando negocios innovadores y abriendo nuevas oportunidades de inversión.',
+                 'numbers_title_part1': 'Números', 'numbers_title_part2': 'de RTSC',
+                'count_assets_value': '+10 mil M', 'count_assets_desc': 'en activos bajo custodia', // mil millones
+                'count_collaborators_value': '+1.000', 'count_collaborators_desc': 'colaboradores',
+                'count_investors_value': '+500 mil', 'count_investors_desc': 'inversores',
                 'about_title_part1': 'Sobre', 'about_title_part2': 'RTSC',
                 'about_card1_title': 'Quiénes Somos', 'about_card1_desc': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.',
                 'about_card2_title': 'Innovación', 'about_card2_desc': 'Un centro de innovación, con vocación para acelerar negocios audaces y transformadores.',
@@ -443,13 +571,13 @@
                 'vmg_title_part1': 'Misión, Visión y', 'vmg_title_part2': 'Valores',
                 'mission_title': 'Misión', 'mission_item1': '• Impulsar el capital humano y organizacional de forma sostenible.', 'mission_item2': '• Generar valor y desarrollo a través de inversiones en el sector inmobiliario.',
                 'vision_title': 'Visión', 'vision_item1': '• Ser el holding de referencia en inversiones inmobiliarias y turísticas.', 'vision_item2': '• Promover una transformación positiva en la economía brasileña.',
-                'values_title': 'Valores', 'values_item1': '• Transparencia e integridad en todas las operaciones.', 'values_item2': '• Innovación continua y excelencia en los resultados.',
+                'values_title': 'Valores', 'values_item1': '• Transparencia e integridad en todas las operaciones.', 'values_item2': '• Innovação contínua e excelência nos resultados.',
                 'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Actuación',
                 'area_carousel_title': '...', 'area_carousel_desc': '...',
                 'media_title_part1': 'En los', 'media_title_part2': 'Medios',
-                'media_card1_title': 'B3 registra un aumento expresivo de inversores individuales', 'media_card1_desc': 'Conozca más sobre el crecimiento del mercado de inversiones en Brasil.',
-                'media_card2_title': '¿Son los fondos inmobiliarios una buena opción?', 'media_card2_desc': 'Entienda cómo funcionan los fondos inmobiliarios y sus beneficios.',
-                'media_card3_title': 'La caída de la tasa Selic inicia un nuevo ciclo económico', 'media_card3_desc': 'Conozca el impacto de la reducción de la tasa Selic en el mercado inmobiliario.',
+                'media_card1_title': 'B3 registra un aumento expresivo de inversores individuales', 'media_card1_desc': '',
+                'media_card2_title': '¿Son los fondos inmobiliarios una buena opción?', 'media_card2_desc': '',
+                'media_card3_title': 'La caída de la tasa Selic inicia un nuevo ciclo económico', 'media_card3_desc': '',
                 'media_card_link': 'Saber Más &rarr;',
                 'contact_title_part1': 'Entre en', 'contact_title_part2': 'Contacto',
                 'contact_phone_title': 'Teléfono', 'contact_email_title': 'Correo Electrónico', 'contact_address_title': 'Dirección',
@@ -473,6 +601,10 @@
                 'hero_subtitle': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。', 'hero_button': '了解 RTSC',
                 'history_title_part1': '我们的', 'history_title_part2': '历史',
                 'history_text': '我们的历史始于 2014 年，从那时起，我们从未停止寻求可持续发展的机会。我们在巴西所有地区推动真正的经济影响，创造创新的业务并开辟新的投资机会。',
+                 'numbers_title_part1': 'RTSC', 'numbers_title_part2': '数据',
+                'count_assets_value': '+100 亿', 'count_assets_desc': '托管资产',
+                'count_collaborators_value': '+1,000', 'count_collaborators_desc': '合作者',
+                'count_investors_value': '+50 万', 'count_investors_desc': '投资者',
                 'about_title_part1': '关于', 'about_title_part2': 'RTSC',
                 'about_card1_title': '关于我们', 'about_card1_desc': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。',
                 'about_card2_title': '创新', 'about_card2_desc': '一个致力于加速大胆和变革性业务的创新中心。',
@@ -486,9 +618,9 @@
                 'areas_title_part1': '业务', 'areas_title_part2': '领域',
                  'area_carousel_title': '...', 'area_carousel_desc': '...',
                 'media_title_part1': '媒体', 'media_title_part2': '报道',
-                'media_card1_title': 'B3 注册个人投资者显著增加', 'media_card1_desc': '了解更多关于巴西投资市场的增长情况。',
-                'media_card2_title': '房地产基金是好选择吗？', 'media_card2_desc': '了解房地产基金的运作方式及其好处。',
-                'media_card3_title': 'Selic 利率下降开启新经济周期', 'media_card3_desc': '了解 Selic 利率降低对房地产市场的影响。',
+                'media_card1_title': 'B3 注册个人投资者显著增加', 'media_card1_desc': '',
+                'media_card2_title': '房地产基金是好选择吗？', 'media_card2_desc': '',
+                'media_card3_title': 'Selic 利率下降开启新经济周期', 'media_card3_desc': '',
                 'media_card_link': '了解更多 &rarr;',
                 'contact_title_part1': '联系', 'contact_title_part2': '我们',
                 'contact_phone_title': '电话', 'contact_email_title': '电子邮件', 'contact_address_title': '地址',
@@ -560,13 +692,21 @@
              const currentTranslations = translations[lang];
              const titleEl = document.getElementById('carousel-title');
              const descEl = document.getElementById('carousel-desc');
+             const iconWrapper = document.getElementById('area-carousel-icon-wrapper'); 
 
-             if(titleEl && descEl && currentTranslations) {
+             // Verifica se iconWrapper existe antes de tentar acessá-lo
+             if(titleEl && descEl && currentTranslations) { 
                  const titleKey = `area_${carouselIndex}_title`;
                  const descKey = `area_${carouselIndex}_desc`;
-                 // Fallback para chave não encontrada
                  titleEl.textContent = currentTranslations[titleKey] || translations['pt'][titleKey] || '...';
                  descEl.textContent = currentTranslations[descKey] || translations['pt'][descKey] || '...';
+                 
+                 // Muda o ícone SOMENTE se o wrapper existir
+                 if (iconWrapper) { 
+                     const iconName = areaIcons[carouselIndex] || 'help-circle'; 
+                     iconWrapper.innerHTML = `<i data-lucide="${iconName}" class="w-8 h-8"></i>`;
+                     lucide.createIcons(); 
+                 }
              }
          }
 
@@ -574,13 +714,20 @@
              const currentTranslations = translations[lang];
              const titleEl = document.getElementById('about-carousel-title');
              const descEl = document.getElementById('about-carousel-desc');
+             const iconWrapper = document.getElementById('about-carousel-icon-wrapper'); 
 
-            if(titleEl && descEl && currentTranslations) {
+            if(titleEl && descEl && iconWrapper && currentTranslations) {
                  const titleKey = `about_mobile_${aboutCarouselIndex}_title`;
                  const descKey = `about_mobile_${aboutCarouselIndex}_desc`;
-                  // Fallback para chave não encontrada
                  titleEl.textContent = currentTranslations[titleKey] || translations['pt'][titleKey] || '...';
                  descEl.textContent = currentTranslations[descKey] || translations['pt'][descKey] || '...';
+
+                 // Muda o ícone SOMENTE se o wrapper existir
+                 if (iconWrapper) {
+                     const iconName = aboutIcons[aboutCarouselIndex] || 'help-circle'; 
+                     iconWrapper.innerHTML = `<i data-lucide="${iconName}" class="w-8 h-8"></i>`;
+                     lucide.createIcons(); 
+                 }
              }
          }
 
@@ -590,10 +737,8 @@
             const indicatorsEl = document.getElementById('carousel-indicators');
              if (!card || !indicatorsEl) return;
             
-             // ATUALIZADO: Chamar explicitamente a atualização de conteúdo
              updateCarouselContent(); 
 
-            // Lógica de vídeo e indicadores (inalterada)
             const allVideos = document.querySelectorAll('.area-video');
             allVideos.forEach((video, index) => { 
                 if (index === carouselIndex) {
@@ -603,7 +748,6 @@
                 }
             }); 
              indicatorsEl.innerHTML = '';
-             // ATUALIZADO: Usar o número 5 diretamente ou `Object.keys(translations.pt).filter(k => k.startsWith('area_') && k.endsWith('_title')).length` se dinâmico
              for(let i = 0; i < 5; i++) { 
                 const indicator = document.createElement('div');
                 indicator.className = 'indicator' + (i === carouselIndex ? ' active' : '');
@@ -612,20 +756,17 @@
             card.style.animation = 'none'; setTimeout(() => { card.style.animation = 'fadeInUp 0.8s ease-out'; }, 10);
         }
 
-        function nextCarousel() { carouselIndex = (carouselIndex + 1) % 5; updateCarousel(); } // Usar 5 (número de áreas)
-        function prevCarousel() { carouselIndex = (carouselIndex - 1 + 5) % 5; updateCarousel(); } // Usar 5
+        function nextCarousel() { carouselIndex = (carouselIndex + 1) % 5; updateCarousel(); } 
+        function prevCarousel() { carouselIndex = (carouselIndex - 1 + 5) % 5; updateCarousel(); } 
 
         function updateAboutCarousel() {
             const card = document.getElementById('about-carousel-card');
             const indicatorsEl = document.getElementById('about-carousel-indicators');
              if (!card || !indicatorsEl) return;
             
-             // ATUALIZADO: Chamar explicitamente a atualização de conteúdo
              updateAboutCarouselContent(); 
 
-            // Lógica de indicadores (inalterada)
              indicatorsEl.innerHTML = '';
-             // ATUALIZADO: Usar o número 4 diretamente ou `Object.keys(translations.pt).filter(k => k.startsWith('about_mobile_') && k.endsWith('_title')).length` se dinâmico
              for(let i = 0; i < 4; i++) { 
                  const indicator = document.createElement('div');
                 indicator.className = 'indicator' + (i === aboutCarouselIndex ? ' active' : '');
@@ -634,8 +775,8 @@
             card.style.animation = 'none'; setTimeout(() => { card.style.animation = 'fadeInUp 0.8s ease-out'; }, 10);
         }
 
-        function nextAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex + 1) % 4; updateAboutCarousel(); } // Usar 4 (número de cards about)
-        function prevAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex - 1 + 4) % 4; updateAboutCarousel(); } // Usar 4
+        function nextAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex + 1) % 4; updateAboutCarousel(); } 
+        function prevAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex - 1 + 4) % 4; updateAboutCarousel(); } 
 
 
         // --- Event Listener Principal ---
@@ -649,39 +790,47 @@
                     const scrollPosition = window.scrollY;
                     const animationDistance = 500; 
                     const progress = Math.min(1, scrollPosition / animationDistance);
-                    // heroTextContent.style.opacity = (1 - progress).toString(); // Linha comentada ou removida
                     heroScrollMask.style.opacity = progress.toString();
                  });
             }
 
-             // ATUALIZADO: Intersection Observer para animação do vídeo "Sobre"
+             // Intersection Observer para animação do vídeo "Sobre"
              const aboutSection = document.getElementById('sobre-rtsc');
              const aboutVideoContainer = document.getElementById('about-video-anim-container');
-
              if(aboutSection && aboutVideoContainer) {
                  const observer = new IntersectionObserver((entries) => {
                      entries.forEach(entry => {
                          const ratio = entry.intersectionRatio;
-                         // Ajustar escala final para cobrir totalmente (ex: 2.0 ou 2.5)
                          const scale = ratio * 2.5; 
                          const rotate = ratio * 180; 
-                         
                          aboutVideoContainer.style.opacity = ratio;
                          aboutVideoContainer.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rotate}deg)`;
-
                      });
-                 }, {
-                     threshold: Array.from({ length: 101 }, (_, i) => i / 100) // Gera thresholds de 0.0 a 1.0
-                 });
+                 }, { threshold: Array.from({ length: 101 }, (_, i) => i / 100) });
                  observer.observe(aboutSection);
              }
 
+             // ATUALIZADO: Intersection Observer para animação dos cards
+             const cardsToAnimate = document.querySelectorAll('.animate-card-on-scroll');
+             const cardObserver = new IntersectionObserver((entries) => {
+                 entries.forEach((entry, index) => {
+                     if (entry.isIntersecting) {
+                         entry.target.classList.add('is-visible');
+                         cardObserver.unobserve(entry.target); // Anima apenas uma vez
+                     }
+                 });
+             }, { threshold: 0.1 }); 
 
-            // ATUALIZADO: Inicialização de Idioma
-            const userPrefLang = localStorage.getItem('rtsc_lang') || 'pt'; // Default 'pt'
-            setLanguage(userPrefLang); // Aplica o idioma inicial
+             cardsToAnimate.forEach(card => {
+                 cardObserver.observe(card);
+             });
 
-            // ATUALIZADO: Listeners para botões de idioma
+
+            // Inicialização de Idioma
+            const userPrefLang = localStorage.getItem('rtsc_lang') || 'pt'; 
+            setLanguage(userPrefLang); 
+
+            // Listeners para botões de idioma
             document.querySelectorAll('.lang-select-button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const lang = e.currentTarget.getAttribute('data-lang');
@@ -689,7 +838,7 @@
                 });
             });
 
-            // Inicializadores dos Carrosséis (inalterados, mas agora chamam funções que usam traduções)
+            // Inicializadores dos Carrosséis
             const prevAreaButton = document.getElementById('carousel-prev');
             const nextAreaButton = document.getElementById('carousel-next');
             if (prevAreaButton && nextAreaButton) { updateCarousel(); prevAreaButton.onclick = prevCarousel; nextAreaButton.onclick = nextCarousel; }
@@ -698,11 +847,8 @@
             const nextAboutButton = document.getElementById('about-carousel-next');
             if (prevAboutButton && nextAboutButton) { updateAboutCarousel(); prevAboutButton.onclick = prevAboutCarousel; nextAboutButton.onclick = nextAboutCarousel; }
            
-             // ATUALIZADO: Inicializar ícones Lucide DEPOIS do DOM carregado
-            lucide.createIcons();
+            lucide.createIcons(); // Inicializa ícones Lucide
         });
     </script>
 </body>
 </html>
-" selected from the Canvas document RTSC_Website.html.
-
