@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<!-- ATUALIZADO: lang será definido dinamicamente -->
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8"> <!-- Corrigido charset -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTSC - Premium Real Estate Investment Group</title>
+    <!-- Inclusão do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ATUALIZADO: Inclusão do Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-bg': '#141416',
+                        'secondary-bg': '#1a1a1a',
+                        'accent-gold': '#edc77c',
+                        'accent-gold-dark': '#8d6d3e',
+                        'text-white': '#ffffff',
+                        'text-gray': '#d1d5db',
+                        'border-gray': '#374151',
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-in-left': 'slideInLeft 0.8s ease-out',
+                        'slide-in-right': 'slideInRight 0.8s ease-out',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                         /* ATUALIZADO: Adicionada animação bounce */
+                        'bounce': 'bounce 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { 'from': { opacity: 0 }, 'to': { opacity: 1 } },
+                        slideInLeft: { 'from': { opacity: 0, transform: 'translateX(-30px)' }, 'to': { opacity: 1, transform: 'translateX(0)' } },
+                        slideInRight: { 'from': { opacity: 0, transform: 'translateX(30px)' }, 'to': { opacity: 1, transform: 'translateX(0)' } },
+                        fadeInUp: { 'from': { opacity: 0, transform: 'translateY(20px)' }, 'to': { opacity: 1, transform: 'translateY(0)' } },
+                         /* ATUALIZADO: Keyframes da animação bounce */
+                        bounce: {
+                             '0%, 100%': { transform: 'translateY(5px)' },
+                             '50%': { transform: 'translateY(-5px)' },
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Estilos personalizados -->
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(to right, #8d6d3e, #edc77c);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .delay-100 { animation-delay: 100ms; } .delay-200 { animation-delay: 200ms; } .delay-300 { animation-delay: 300ms; }
+        .bg-geometric { position: fixed; pointer-events: none; z-index: 0; }
+        .bg-geometric-1 { top: 0; right: 0; width: 384px; height: 384px; background: linear-gradient(135deg, #374151, #141416); transform: rotate(45deg) translate(50%, -50%); }
+        .bg-geometric-2 { bottom: 0; left: 0; width: 384px; height: 384px; background: linear-gradient(45deg, #374151, #141416); transform: rotate(45deg) translate(-50%, 50%); }
+        .bg-geometric-3 { top: 25%; right: 25%; width: 256px; height: 256px; background: radial-gradient(circle, rgba(141, 109, 62, 0.05), transparent); border-radius: 50%; filter: blur(48px); }
+        .bg-geometric-4 { bottom: 25%; left: 25%; width: 256px; height: 256px; background: radial-gradient(circle, rgba(141, 109, 62, 0.05), transparent); border-radius: 50%; filter: blur(48px); }
+        .carousel-button { background: rgba(237, 199, 124, 0.2); border: none; color: #edc77c; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.25rem; }
+        .carousel-button:hover { background: rgba(237, 199, 124, 0.4); transform: scale(1.1); }
+        .indicator { width: 10px; height: 10px; border-radius: 50%; background-color: #374151; transition: all 0.3s ease; }
+        .indicator.active { background-color: #edc77c; width: 24px; border-radius: 9999px; }
+        /* Estilos para o seletor de idioma */
+        details summary::-webkit-details-marker { display:none; } /* Esconde a seta padrão */
+        details summary { list-style: none; } /* Esconde a seta padrão (Firefox) */
+        /* Animação fade-in para o dropdown */
+        @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        details[open] > div { animation: fadeInDropdown 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-primary-bg text-text-white font-sans overflow-x-hidden">
+    
+    <!-- Elementos de Fundo -->
+    <div class="bg-geometric bg-geometric-1"></div>
+    <div class="bg-geometric bg-geometric-2"></div>
+    <div class="bg-geometric bg-geometric-3"></div>
+    <div class="bg-geometric bg-geometric-4"></div>
+
+    <!-- ======= Header ======= -->
+    <header class="sticky top-0 z-30 backdrop-blur-sm border-b border-border-gray">
+        <!-- Container principal: Adicionado 'relative' para contexto de posição -->
+        <div class="container relative mx-auto max-w-7xl px-4 py-4 flex flex-col items-center md:flex-row md:justify-between">
+            
+            <!-- Logo: Centralizado no mobile (pelo flex do pai), à esquerda no desktop -->
+             <div class="w-full flex justify-center md:w-auto md:flex-shrink-0">
+                 <img src="https://d335luupugsy2.cloudfront.net/cms/files/691549/1693434942/$20c7zqr5hod" alt="RTSC Logo" class="h-12 w-auto">
+             </div>
+
+            <!-- Seletor de Idioma -->
+            <!-- Mobile: absolute top-4 right-4 -->
+            <!-- Desktop: md:relative md:top-auto md:right-auto md:ml-6 -->
+            <details class="absolute top-4 right-4 md:relative md:top-auto md:right-auto md:ml-6" id="lang-details">
+                <summary class="flex items-center gap-1 cursor-pointer list-none text-xs sm:text-sm font-medium text-text-white hover:text-accent-gold transition-colors" title="Selecionar Idioma">
+                    <i data-lucide="globe" class="w-4 h-4 text-accent-gold"></i>
+                    <span id="current-lang-label" class="font-bold">PT</span>
+                </summary>
+                <!-- Menu Dropdown (z-50 para ficar acima de outros elementos do header) -->
+                <div class="absolute right-0 top-full mt-2 w-36 bg-secondary-bg border border-border-gray rounded-lg shadow-xl z-50 overflow-hidden origin-top-right">
+                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="pt">
+                        <span data-i18n="lang_pt">Português</span> (PT)
+                    </button>
+                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="en">
+                        <span data-i18n="lang_en">Inglês</span> (EN)
+                    </button>
+                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="es">
+                        <span data-i18n="lang_es">Espanhol</span> (ES)
+                    </button>
+                    <button class="lang-select-button w-full text-left py-2 px-4 hover:bg-accent-gold/20 transition-colors text-xs md:text-sm" data-lang="zh">
+                        <span data-i18n="lang_zh">Mandarim</span> (ZH)
+                    </button>
+                </div>
+            </details>
+            
+            <!-- Navegação -->
+            <!-- Mobile: w-full flex justify-center mt-4 -->
+            <!-- Desktop: md:w-auto md:mt-0 md:ml-auto (para ir para a direita, após o seletor relativo) -->
+            <nav class="w-full flex items-center justify-center gap-4 md:gap-6 mt-4 md:mt-0 md:w-auto md:ml-auto">
+                <a href="#nossa-historia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_who_we_are">Quem somos</a>
+                <a href="#area-atuacao" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_area">Área de atuação</a>
+                <a href="#midia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_media">Na Mídia</a>
+                <a href="#contato" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_contact">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======= Hero Section ======= -->
+    <section class="fixed inset-0 h-screen z-10 animate-fade-in overflow-hidden">
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-[-1]"> <source src="imagens/Recepção (1).mp4" type="video/mp4"> </video>
+        <div class="absolute inset-0 bg-primary-bg/50 z-0"></div>
+        <div id="hero-scroll-mask" class="absolute inset-0 bg-primary-bg z-10 pointer-events-none" style="opacity: 0;"></div>
+        <div id="hero-text-content" class="relative z-15 container mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
+            <!-- ATUALIZADO: Dividido em spans com data-i18n, mantendo a estrutura original -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-8">
+                <span data-i18n="hero_title_part1">Somos uma holding com foco no </span>
+                <span class="gradient-text" data-i18n="hero_title_part2">desenvolvimento do setor Imobiliário</span>
+                <span data-i18n="hero_title_part3"> e do Turismo no Brasil.</span>
+            </h1>
+            <p class="text-base md:text-lg text-text-gray max-w-2xl mb-12 mx-auto" data-i18n="hero_subtitle">Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.</p>
+            <!-- ATUALIZADO: Adicionada classe 'animate-bounce' -->
+            <a href="#nossa-historia" class="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-accent-gold-dark to-accent-gold text-black font-bold rounded-full cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-accent-gold/30 animate-bounce" data-i18n="hero_button">
+                CONHEÇA A RTSC
+            </a>
+        </div>
+    </section>
+
+    <main class="relative z-20 bg-primary-bg" style="margin-top: 100vh;">
+        <!-- ======= History Section ======= -->
+        <section id="nossa-historia" class="container mx-auto max-w-7xl py-16 md:py-24 px-4 scroll-mt-28 md:scroll-mt-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-in-left">
+                    <h2 class="text-3xl md:text-4xl font-black mb-4"> <span data-i18n="history_title_part1">Nossa</span> <span class="gradient-text" data-i18n="history_title_part2">História</span></h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mb-10"></div>
+                    <p class="text-base md:text-lg text-text-gray leading-relaxed" data-i18n="history_text">
+                        Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.
+                    </p>
+                </div>
+                <div class="relative w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-lg animate-slide-in-right border-4 border-border-gray">
+                    <video class="w-full h-full object-cover object-center" autoplay muted loop playsinline> <source src="imagens/Nossa história (1).mp4" type="video/mp4"> </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= About Section ======= -->
+        <!-- ATUALIZADO: Removido container da section, adicionado px-0 -->
+        <section id="sobre-rtsc" class="relative py-16 md:py-24 px-0">
+             <div id="about-video-anim-wrapper" class="absolute inset-0 z-0 overflow-hidden">
+                 <div id="about-video-anim-container" 
+                      class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 scale-0 rotate-0 opacity-0 transition-transform duration-500 ease-out transition-opacity duration-500 ease-out">
+                    <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> <!-- Removido rounded e border -->
+                        <video class="w-full h-full object-cover object-top" autoplay muted loop playsinline> <source src="imagens/Sobre a RTSC (1).mp4" type="video/mp4"> </video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- ATUALIZADO: Adicionado container ao conteúdo -->
+            <div class="relative z-10 container mx-auto max-w-7xl px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="about_title_part1">Sobre a</span> <span class="gradient-text" data-i18n="about_title_part2">RTSC</span></h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+                </div>
+                <div> 
+                    <div class="hidden lg:grid grid-cols-4 gap-8">
+                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                            <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card1_title">Quem Somos</h3>
+                            <p class="text-sm text-text-gray" data-i18n="about_card1_desc">Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-100 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                            <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card2_title">Inovação</h3>
+                            <p class="text-sm text-text-gray" data-i18n="about_card2_desc">Um hub de inovação, com vocação para acelerar negócios arrojados e transformadores.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-200 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                            <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card3_title">Empreendedor</h3>
+                            <p class="text-sm text-text-gray" data-i18n="about_card3_desc">Um grupo empreendedor pioneiro, desbravador, versátil, sempre em busca dos melhores resultados.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-lg p-6 transition-all duration-300 animate-fade-in-up delay-300 flex flex-col justify-center shadow-lg hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30">
+                            <h3 class="text-lg sm:text-xl text-accent-gold font-bold mb-2" data-i18n="about_card4_title">Gestão</h3>
+                            <p class="text-sm text-text-gray" data-i18n="about_card4_desc">Uma gestora de novos negócios, com foco na transparência e na segurança.</p>
+                        </div>
+                    </div>
+                    <div id="about-carousel-card" class="lg:hidden bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 p-4 rounded-xl min-h-[200px] flex flex-col justify-between animate-fade-in-up">
+                        <div>
+                            <h3 id="about-carousel-title" class="text-2xl font-bold text-accent-gold mb-6" data-i18n="about_mobile_card_title">Carregando...</h3>
+                            <p id="about-carousel-desc" class="text-base text-text-gray" data-i18n="about_mobile_card_desc">Carregando...</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-8">
+                            <button id="about-carousel-prev" class="carousel-button" aria-label="Slide anterior">←</button>
+                            <div id="about-carousel-indicators" class="flex gap-2"></div>
+                            <button id="about-carousel-next" class="carousel-button" aria-label="Próximo slide">→</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Mission Section ======= -->
+        <section class="container mx-auto max-w-7xl py-16 md:py-24 px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="vmg_title_part1">Missão, Visão e</span> <span class="gradient-text" data-i18n="vmg_title_part2">Valores</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up">
+                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="mission_title">Missão</h3>
+                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                        <li data-i18n="mission_item1">• Impulsionar o capital humano e organizacional de forma sustentável.</li>
+                        <li data-i18n="mission_item2">• Gerar valor e desenvolvimento através de investimentos no setor imobiliário.</li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up delay-100">
+                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="vision_title">Visão</h3>
+                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                        <li data-i18n="vision_item1">• Ser a holding de referência em investimentos imobiliários e turísticos.</li>
+                        <li data-i18n="vision_item2">• Promover transformação positiva na economia brasileira.</li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border border-accent-gold-dark/30 rounded-lg p-4 md:p-8 transition-all duration-300 hover:border-accent-gold hover:scale-105 animate-fade-in-up delay-200">
+                    <h3 class="text-lg md:text-2xl text-black font-bold mb-4" data-i18n="values_title">Valores</h3>
+                    <ul class="space-y-2 text-gray-900 text-xs md:text-base">
+                        <li data-i18n="values_item1">• Transparência e integridade em todas as operações.</li>
+                        <li data-i18n="values_item2">• Inovação contínua e excelência nos resultados.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Areas Section ======= -->
+        <section id="area-atuacao" class="relative overflow-hidden py-16 md:py-24 px-4 scroll-mt-28 md:scroll-mt-20">
+            <div id="area-video-container" class="absolute inset-0 z-0">
+                <video id="area-video-0" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" autoplay muted loop playsinline preload="auto"> <source src="imagens/PrivateEquity (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-1" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/GestaoDeInvestimentos (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-2" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/SecuritizacaoEGarantias (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-3" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/Imobiliárias (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-4" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/ServicosImobiliarios (1).mp4" type="video/mp4"> </video>
+            </div>
+            <div class="absolute inset-0 z-1 bg-primary-bg/60"></div>
+            <div class="container mx-auto max-w-7xl relative z-10">
+                <div class="text-center mb-16 animate-fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 whitespace-nowrap"><span data-i18n="areas_title_part1">Áreas de</span> <span class="gradient-text" data-i18n="areas_title_part2">Atuação</span></h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+                </div>
+                <div id="carousel-card" class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 p-6 md:p-12 rounded-xl min-h-[300px] flex flex-col justify-between animate-fade-in-up delay-100">
+                    <div>
+                        <h3 id="carousel-title" class="text-2xl md:text-3xl font-bold text-accent-gold mb-6" data-i18n="area_carousel_title">Carregando...</h3>
+                        <p id="carousel-desc" class="text-base md:text-lg text-text-gray max-w-3xl" data-i18n="area_carousel_desc">Carregando...</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-8">
+                        <button id="carousel-prev" class="carousel-button" aria-label="Slide anterior">←</button>
+                        <div id="carousel-indicators" class="flex gap-2"></div>
+                        <button id="carousel-next" class="carousel-button" aria-label="Próximo slide">→</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= News Section ======= -->
+        <section id="midia" class="py-16 md:py-24 px-4 bg-gradient-to-b from-primary-bg/50 to-gray-900/30 scroll-mt-28 md:scroll-mt-20">
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="media_title_part1">Na</span> <span class="gradient-text" data-i18n="media_title_part2">Mídia</span></h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up">
+                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card1_title">B3 registra alta expressiva de investidores por CPF</h3>
+                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card1_desc">Saiba mais sobre o crescimento do mercado de investimentos no Brasil.</p>
+                        <a href="https://www.terra.com.br/noticias/b3-registra-alta-expressiva-de-investidores-por-cpf,d8b11b525430093f78d385f1ea1e88f7vkkwnors.html#:~:text=Uma%20recente%20pesquisa%20publicada%20pela,individuais%20de%20negocia%C3%A7%C3%A3o%20dos%20investidores" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    </div>
+                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up delay-100">
+                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card2_title">Fundos imobiliários são uma boa opção?</h3>
+                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card2_desc">Entenda como os fundos imobiliários funcionam e seus benefícios.</p>
+                        <a href="https://valor.globo.com/patrocinado/dino/noticia/2023/06/01/fundos-imobiliarios-sao-uma-boa-opcao-de-investimento.ghtml" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    </div>
+                    <div class="bg-white/95 text-black rounded-lg p-4 md:p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-gold/30 animate-fade-in-up delay-200">
+                        <h3 class="text-lg md:text-xl font-bold mb-3" data-i18n="media_card3_title">Queda da Selic inicia um novo ciclo na economia</h3>
+                        <p class="text-gray-600 text-xs md:text-sm mb-4" data-i18n="media_card3_desc">Conheça o impacto da redução da taxa Selic no mercado imobiliário.</p>
+                        <a href="https://www.terra.com.br/noticias/queda-da-selic-inicia-um-novo-ciclo-na-economia,3405c90b3bb421738de333f4a574aef0q0i0zwlj.html" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm" data-i18n="media_card_link">Saiba Mais &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contato" class="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/30 to-primary-bg">
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="contact_title_part1">Entre em</span> <span class="gradient-text" data-i18n="contact_title_part2">Contato</span></h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
+                </div>
+                <div class="max-w-2xl mx-auto">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <a href="tel:+551135788007" class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1 no-underline">
+                            <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_phone_title">Telefone</h3>
+                            <p class="text-sm font-bold text-gray-900">+55 (11) 3578-8007</p>
+                        </a>
+                        <a href="mailto:contato@rtsc.com.br" class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1 no-underline">
+                            <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_email_title">E-mail</h3>
+                            <p class="text-sm font-bold text-gray-900 break-words">contato@rtsc.com.br</p>
+                        </a>
+                    </div>
+                    <div class="bg-gradient-to-br from-[#8d6d3e] to-[#edc77c] border-2 border-accent-gold-dark/30 p-3 rounded-lg text-center transition-all duration-300 hover:border-accent-gold hover:scale-105 hover:-translate-y-1">
+                        <h3 class="text-xs font-bold text-black mb-1 uppercase tracking-wider" data-i18n="contact_address_title">Endereço</h3>
+                        <p class="text-xs font-bold text-gray-900" data-i18n="contact_address_text">Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======= Footer ======= -->
+    <footer class="relative z-20 bg-secondary-bg border-t border-border-gray py-12 md:py-16 px-4 text-center">
+        <p class="text-sm text-text-gray" data-i18n="footer_copyright">&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- ======= Scripts ======= -->
+    <script>
+        // --- Dados para Carrosséis ---
+        let carouselIndex = 0;
+        let aboutCarouselIndex = 0;
+
+        // --- Dados de Tradução ---
+        const translations = {
+            'pt': { /* Todas as chaves em Português */
+                'menu_who_we_are': 'Quem somos', 'menu_area': 'Área de atuação', 'menu_media': 'Na Mídia', 'menu_contact': 'Contato',
+                'hero_title_part1': 'Somos uma holding com foco no ', 'hero_title_part2': 'desenvolvimento do setor Imobiliário', 'hero_title_part3': ' e do Turismo no Brasil.',
+                'hero_subtitle': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.', 'hero_button': 'CONHEÇA A RTSC',
+                'history_title_part1': 'Nossa', 'history_title_part2': 'História',
+                'history_text': 'Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.',
+                'about_title_part1': 'Sobre a', 'about_title_part2': 'RTSC',
+                'about_card1_title': 'Quem Somos', 'about_card1_desc': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.',
+                'about_card2_title': 'Inovação', 'about_card2_desc': 'Um hub de inovação, com vocação para acelerar negócios arrojados e transformadores.',
+                'about_card3_title': 'Empreendedor', 'about_card3_desc': 'Um grupo empreendedor pioneiro, desbravador, versátil, sempre em busca dos melhores resultados.',
+                'about_card4_title': 'Gestão', 'about_card4_desc': 'Uma gestora de novos negócios, com foco na transparência e na segurança.',
+                'about_mobile_card_title': '...', 'about_mobile_card_desc': '...', // Será preenchido dinamicamente
+                'vmg_title_part1': 'Missão, Visão e', 'vmg_title_part2': 'Valores',
+                'mission_title': 'Missão', 'mission_item1': '• Impulsionar o capital humano e organizacional de forma sustentável.', 'mission_item2': '• Gerar valor e desenvolvimento através de investimentos no setor imobiliário.',
+                'vision_title': 'Visão', 'vision_item1': '• Ser a holding de referência em investimentos imobiliários e turísticos.', 'vision_item2': '• Promover transformação positiva na economia brasileira.',
+                'values_title': 'Valores', 'values_item1': '• Transparência e integridade em todas as operações.', 'values_item2': '• Inovação contínua e excelência nos resultados.',
+                'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Atuação',
+                'area_carousel_title': '...', 'area_carousel_desc': '...', // Será preenchido dinamicamente
+                'media_title_part1': 'Na', 'media_title_part2': 'Mídia',
+                'media_card1_title': 'B3 registra alta expressiva de investidores por CPF', 'media_card1_desc': 'Saiba mais sobre o crescimento do mercado de investimentos no Brasil.',
+                'media_card2_title': 'Fundos imobiliários são uma boa opção?', 'media_card2_desc': 'Entenda como os fundos imobiliários funcionam e seus benefícios.',
+                'media_card3_title': 'Queda da Selic inicia um novo ciclo na economia', 'media_card3_desc': 'Conheça o impacto da redução da taxa Selic no mercado imobiliário.',
+                'media_card_link': 'Saiba Mais &rarr;',
+                'contact_title_part1': 'Entre em', 'contact_title_part2': 'Contato',
+                'contact_phone_title': 'Telefone', 'contact_email_title': 'E-mail', 'contact_address_title': 'Endereço',
+                'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000',
+                'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos os direitos reservados.',
+                'lang_pt': 'Português', 'lang_en': 'Inglês', 'lang_es': 'Espanhol', 'lang_zh': 'Mandarim',
+                 // Traduções dos carrosséis
+                'area_0_title': 'Private Equity', 'area_0_desc': 'Estruturas que investem em empreendimentos diversos, desde projetos em construção a operações consolidadas com foco na indústria hoteleira, como hotéis, resorts e parques.',
+                'area_1_title': 'Gestão de Investimentos', 'area_1_desc': 'Veículos que conectam o setor imobiliário a investidores de todos os portes, incluindo milhares de pessoas físicas que ajudam a financiar o setor por meio de fundos imobiliários.',
+                'area_2_title': 'Securitização e Garantias', 'area_2_desc': 'Soluções financeiras inovadoras que estruturam e garantem operações imobiliárias, facilitando o acesso ao crédito e viabilizando novos projetos.',
+                'area_3_title': 'Imobiliárias', 'area_3_desc': 'Empresas que conectam empreendedores a fontes de financiamento imobiliário alternativas, permitindo que projetos se transformem em realidade.',
+                'area_4_title': 'Serviços Imobiliários', 'area_4_desc': 'Nossa atuação é ampla. O portfólio de empresas investidas inclui muitos outros segmentos atrelados ao universo imobiliário e do turismo.',
+                'about_mobile_0_title': 'Quem Somos', 'about_mobile_0_desc': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.',
+                'about_mobile_1_title': 'Inovação', 'about_mobile_1_desc': 'Um hub de inovação, com vocação para acelerar negócios arrojados e transformadores.',
+                'about_mobile_2_title': 'Empreendedor', 'about_mobile_2_desc': 'Um grupo empreendedor pioneiro, desbravador, versátil, sempre em busca dos melhores resultados.',
+                'about_mobile_3_title': 'Gestão', 'about_mobile_3_desc': 'Uma gestora de novos negócios, com foco na transparência e na segurança.',
+            },
+            'en': { /* Todas as chaves em Inglês */
+                'menu_who_we_are': 'Who We Are', 'menu_area': 'Areas of Operation', 'menu_media': 'In The Media', 'menu_contact': 'Contact',
+                'hero_title_part1': 'We are a holding company focused on the ', 'hero_title_part2': 'development of the Real Estate', 'hero_title_part3': ' and Tourism sectors in Brazil.',
+                'hero_subtitle': 'A holding company that brings together companies operating in various areas, with a focus on tourism.', 'hero_button': 'DISCOVER RTSC',
+                'history_title_part1': 'Our', 'history_title_part2': 'History',
+                'history_text': 'Our history began in 2014, and since then, we have never stopped seeking opportunities with sustainable development. We promote real economic impact in all regions of Brazil, generating innovative businesses and opening new investment opportunities.',
+                'about_title_part1': 'About', 'about_title_part2': 'RTSC',
+                'about_card1_title': 'Who We Are', 'about_card1_desc': 'A holding company that brings together companies operating in various areas, with a focus on tourism.',
+                'about_card2_title': 'Innovation', 'about_card2_desc': 'An innovation hub dedicated to accelerating bold and transformative businesses.',
+                'about_card3_title': 'Entrepreneurial', 'about_card3_desc': 'A pioneering, trailblazing, versatile entrepreneurial group, always seeking the best results.',
+                'about_card4_title': 'Management', 'about_card4_desc': 'A new business manager focused on transparency and security.',
+                'about_mobile_card_title': '...', 'about_mobile_card_desc': '...',
+                'vmg_title_part1': 'Mission, Vision, and', 'vmg_title_part2': 'Values',
+                'mission_title': 'Mission', 'mission_item1': '• Drive human and organizational capital sustainably.', 'mission_item2': '• Generate value and development through investments in the real estate sector.',
+                'vision_title': 'Vision', 'vision_item1': '• Be the leading holding company in real estate and tourism investments.', 'vision_item2': '• Promote positive transformation in the Brazilian economy.',
+                'values_title': 'Values', 'values_item1': '• Transparency and integrity in all operations.', 'values_item2': '• Continuous innovation and excellence in results.',
+                'areas_title_part1': 'Areas of', 'areas_title_part2': 'Operation',
+                'area_carousel_title': '...', 'area_carousel_desc': '...',
+                'media_title_part1': 'In The', 'media_title_part2': 'Media',
+                'media_card1_title': 'B3 registers significant increase in individual investors', 'media_card1_desc': 'Learn more about the growth of the investment market in Brazil.',
+                'media_card2_title': 'Are real estate funds a good option?', 'media_card2_desc': 'Understand how real estate funds work and their benefits.',
+                'media_card3_title': 'Selic rate drop starts a new economic cycle', 'media_card3_desc': 'Learn about the impact of the Selic rate reduction on the real estate market.',
+                'media_card_link': 'Learn More &rarr;',
+                'contact_title_part1': 'Get in', 'contact_title_part2': 'Touch',
+                'contact_phone_title': 'Phone', 'contact_email_title': 'Email', 'contact_address_title': 'Address',
+                'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brazil, 01427-000',
+                'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. All rights reserved.',
+                'lang_pt': 'Portuguese', 'lang_en': 'English', 'lang_es': 'Spanish', 'lang_zh': 'Mandarin',
+                // Traduções dos carrosséis EN
+                'area_0_title': 'Private Equity', 'area_0_desc': 'Structures that invest in diverse ventures, from projects under construction to consolidated operations focused on the hotel industry, such as hotels, resorts, and parks.',
+                'area_1_title': 'Investment Management', 'area_1_desc': 'Vehicles that connect the real estate sector to investors of all sizes, including thousands of individuals who help finance the sector through real estate funds.',
+                'area_2_title': 'Securitization and Guarantees', 'area_2_desc': 'Innovative financial solutions that structure and guarantee real estate operations, facilitating access to credit and enabling new projects.',
+                'area_3_title': 'Real Estate Companies', 'area_3_desc': 'Companies that connect entrepreneurs to alternative real estate financing sources, allowing projects to become reality.',
+                'area_4_title': 'Real Estate Services', 'area_4_desc': 'Our scope is broad. The portfolio of invested companies includes many other segments linked to the real estate and tourism universe.',
+                'about_mobile_0_title': 'Who We Are', 'about_mobile_0_desc': 'A holding company that brings together companies operating in various areas, with a focus on tourism.',
+                'about_mobile_1_title': 'Innovation', 'about_mobile_1_desc': 'An innovation hub dedicated to accelerating bold and transformative businesses.',
+                'about_mobile_2_title': 'Entrepreneurial', 'about_mobile_2_desc': 'A pioneering, trailblazing, versatile entrepreneurial group, always seeking the best results.',
+                'about_mobile_3_title': 'Management', 'about_mobile_3_desc': 'A new business manager focused on transparency and security.',
+            },
+            'es': { /* Todas as chaves em Espanhol */
+                'menu_who_we_are': 'Quiénes Somos', 'menu_area': 'Áreas de Actuación', 'menu_media': 'En los Medios', 'menu_contact': 'Contacto',
+                'hero_title_part1': 'Somos un holding enfocado en el ', 'hero_title_part2': 'desarrollo del sector Inmobiliario', 'hero_title_part3': ' y Turístico en Brasil.',
+                'hero_subtitle': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.', 'hero_button': 'CONOZCA RTSC',
+                'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
+                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas las regiones de Brasil, generando negocios innovadores y abriendo nuevas oportunidades de inversión.',
+                'about_title_part1': 'Sobre', 'about_title_part2': 'RTSC',
+                'about_card1_title': 'Quiénes Somos', 'about_card1_desc': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.',
+                'about_card2_title': 'Innovación', 'about_card2_desc': 'Un centro de innovación, con vocación para acelerar negocios audaces y transformadores.',
+                'about_card3_title': 'Emprendedor', 'about_card3_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre en busca de los mejores resultados.',
+                'about_card4_title': 'Gestión', 'about_card4_desc': 'Una gestora de nuevos negocios, enfocada en la transparencia y la seguridad.',
+                'about_mobile_card_title': '...', 'about_mobile_card_desc': '...',
+                'vmg_title_part1': 'Misión, Visión y', 'vmg_title_part2': 'Valores',
+                'mission_title': 'Misión', 'mission_item1': '• Impulsar el capital humano y organizacional de forma sostenible.', 'mission_item2': '• Generar valor y desarrollo a través de inversiones en el sector inmobiliario.',
+                'vision_title': 'Visión', 'vision_item1': '• Ser el holding de referencia en inversiones inmobiliarias y turísticas.', 'vision_item2': '• Promover una transformación positiva en la economía brasileña.',
+                'values_title': 'Valores', 'values_item1': '• Transparencia e integridad en todas las operaciones.', 'values_item2': '• Innovación continua y excelencia en los resultados.',
+                'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Actuación',
+                'area_carousel_title': '...', 'area_carousel_desc': '...',
+                'media_title_part1': 'En los', 'media_title_part2': 'Medios',
+                'media_card1_title': 'B3 registra un aumento expresivo de inversores individuales', 'media_card1_desc': 'Conozca más sobre el crecimiento del mercado de inversiones en Brasil.',
+                'media_card2_title': '¿Son los fondos inmobiliarios una buena opción?', 'media_card2_desc': 'Entienda cómo funcionan los fondos inmobiliarios y sus beneficios.',
+                'media_card3_title': 'La caída de la tasa Selic inicia un nuevo ciclo económico', 'media_card3_desc': 'Conozca el impacto de la reducción de la tasa Selic en el mercado inmobiliario.',
+                'media_card_link': 'Saber Más &rarr;',
+                'contact_title_part1': 'Entre en', 'contact_title_part2': 'Contacto',
+                'contact_phone_title': 'Teléfono', 'contact_email_title': 'Correo Electrónico', 'contact_address_title': 'Dirección',
+                'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000',
+                'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos los derechos reservados.',
+                'lang_pt': 'Portugués', 'lang_en': 'Inglés', 'lang_es': 'Español', 'lang_zh': 'Mandarín',
+                 // Traduções dos carrosséis ES
+                'area_0_title': 'Capital Privado', 'area_0_desc': 'Estructuras que invierten en diversos emprendimientos, desde proyectos en construcción hasta operaciones consolidadas enfocadas en la industria hotelera, como hoteles, resorts y parques.',
+                'area_1_title': 'Gestión de Inversiones', 'area_1_desc': 'Vehículos que conectan el sector inmobiliario con inversores de todos los tamaños, incluyendo miles de personas físicas que ayudan a financiar el sector a través de fondos inmobiliarios.',
+                'area_2_title': 'Titulización y Garantías', 'area_2_desc': 'Soluciones financieras innovadoras que estructuran y garantizan operaciones inmobiliarias, facilitando el acceso al crédito y viabilizando nuevos proyectos.',
+                'area_3_title': 'Inmobiliarias', 'area_3_desc': 'Empresas que conectan a emprendedores con fuentes de financiación inmobiliaria alternativas, permitiendo que los proyectos se conviertan en realidad.',
+                'area_4_title': 'Servicios Inmobiliarios', 'area_4_desc': 'Nuestra actuación es amplia. La cartera de empresas participadas incluye muchos otros segmentos vinculados al universo inmobiliario y turístico.',
+                'about_mobile_0_title': 'Quiénes Somos', 'about_mobile_0_desc': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.',
+                'about_mobile_1_title': 'Innovación', 'about_mobile_1_desc': 'Un centro de innovación, con vocación para acelerar negocios audaces y transformadores.',
+                'about_mobile_2_title': 'Emprendedor', 'about_mobile_2_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre en busca de los mejores resultados.',
+                'about_mobile_3_title': 'Gestión', 'about_mobile_3_desc': 'Una gestora de nuevos negocios, enfocada en la transparencia y la seguridad.',
+            },
+            'zh': { /* Todas as chaves em Mandarim */
+                'menu_who_we_are': '关于我们', 'menu_area': '业务领域', 'menu_media': '媒体报道', 'menu_contact': '联系方式',
+                'hero_title_part1': '我们是一家专注于巴西', 'hero_title_part2': '房地产和旅游业发展', 'hero_title_part3': '的控股公司。',
+                'hero_subtitle': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。', 'hero_button': '了解 RTSC',
+                'history_title_part1': '我们的', 'history_title_part2': '历史',
+                'history_text': '我们的历史始于 2014 年，从那时起，我们从未停止寻求可持续发展的机会。我们在巴西所有地区推动真正的经济影响，创造创新的业务并开辟新的投资机会。',
+                'about_title_part1': '关于', 'about_title_part2': 'RTSC',
+                'about_card1_title': '关于我们', 'about_card1_desc': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。',
+                'about_card2_title': '创新', 'about_card2_desc': '一个致力于加速大胆和变革性业务的创新中心。',
+                'about_card3_title': '创业精神', 'about_card3_desc': '一个开拓性、探索性、多才多艺的创业团体，始终追求最佳结果。',
+                'about_card4_title': '管理', 'about_card4_desc': '一家专注于透明度和安全性的新业务管理公司。',
+                 'about_mobile_card_title': '...', 'about_mobile_card_desc': '...',
+                'vmg_title_part1': '使命、愿景和', 'vmg_title_part2': '价值观',
+                'mission_title': '使命', 'mission_item1': '• 可持续地推动人力和组织资本。', 'mission_item2': '• 通过房地产行业的投资创造价值和发展。',
+                'vision_title': '愿景', 'vision_item1': '• 成为房地产和旅游投资领域的领先控股公司。', 'vision_item2': '• 促进巴西经济的积极转型。',
+                'values_title': '价值观', 'values_item1': '• 所有运营中的透明度和诚信。', 'values_item2': '• 持续创新和卓越成果。',
+                'areas_title_part1': '业务', 'areas_title_part2': '领域',
+                 'area_carousel_title': '...', 'area_carousel_desc': '...',
+                'media_title_part1': '媒体', 'media_title_part2': '报道',
+                'media_card1_title': 'B3 注册个人投资者显著增加', 'media_card1_desc': '了解更多关于巴西投资市场的增长情况。',
+                'media_card2_title': '房地产基金是好选择吗？', 'media_card2_desc': '了解房地产基金的运作方式及其好处。',
+                'media_card3_title': 'Selic 利率下降开启新经济周期', 'media_card3_desc': '了解 Selic 利率降低对房地产市场的影响。',
+                'media_card_link': '了解更多 &rarr;',
+                'contact_title_part1': '联系', 'contact_title_part2': '我们',
+                'contact_phone_title': '电话', 'contact_email_title': '电子邮件', 'contact_address_title': '地址',
+                'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brazil, 01427-000',
+                'footer_copyright': '&copy; 2025 RTSC - 高级房地产投资集团。版权所有。',
+                'lang_pt': '葡萄牙语', 'lang_en': '英语', 'lang_es': '西班牙语', 'lang_zh': '普通话',
+                 // Traduções dos carrosséis ZH
+                'area_0_title': '私募股权', 'area_0_desc': '投资于各种企业的结构，从在建项目到专注于酒店业（如酒店、度假村和公园）的整合运营。',
+                'area_1_title': '投资管理', 'area_1_desc': '将房地产行业与各种规模的投资者联系起来的工具，包括数千名通过房地产基金帮助资助该行业的个人。',
+                'area_2_title': '证券化和担保', 'area_2_desc': '构建和担保房地产运营的创新金融解决方案，促进信贷获取并实现新项目。',
+                'area_3_title': '房地产公司', 'area_3_desc': '将企业家与替代性房地产融资来源联系起来的公司，使项目成为现实。',
+                'area_4_title': '房地产服务', 'area_4_desc': '我们的范围很广。所投资的公司组合包括许多其他与房地产和旅游领域相关的细分市场。',
+                'about_mobile_0_title': '关于我们', 'about_mobile_0_desc': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。',
+                'about_mobile_1_title': '创新', 'about_mobile_1_desc': '一个致力于加速大胆和变革性业务的创新中心。',
+                'about_mobile_2_title': '创业精神', 'about_mobile_2_desc': '一个开拓性、探索性、多才多艺的创业团体，始终追求最佳结果。',
+                'about_mobile_3_title': '管理', 'about_mobile_3_desc': '一家专注于透明度和安全性的新业务管理公司。',
+            }
+        };
+
+        // --- ATUALIZADO: Mapeamento de Siglas ---
+        const langLabels = { 'pt': 'PT', 'en': 'EN', 'es': 'ES', 'zh': 'ZH' };
+
+        // --- Função para Aplicar Traduções ---
+        function applyTranslation(lang) {
+            const currentTranslations = translations[lang];
+            if (!currentTranslations) return; // Idioma não encontrado
+
+            // Traduz elementos com data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (currentTranslations[key] !== undefined) {
+                    element.innerHTML = currentTranslations[key]; // Usar innerHTML para permitir tags como <br>, <span>
+                } else {
+                    // Não loga mais warning para chaves dinâmicas dos carrosséis
+                    if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_')) {
+                         console.warn(`Chave de tradução não encontrada para '${key}' no idioma '${lang}'`);
+                    }
+                }
+            });
+
+            // Atualiza o atributo lang da tag html
+            document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; // Ex: pt, en, es, zh-CN
+
+            // Atualiza a label do idioma atual no header
+            const currentLangLabel = document.getElementById('current-lang-label');
+            if (currentLangLabel) {
+                currentLangLabel.textContent = langLabels[lang] || lang.toUpperCase();
+            }
+             // ATUALIZADO: Atualiza o conteúdo dos carrosséis com base no idioma
+            updateCarouselContent(lang);
+            updateAboutCarouselContent(lang);
+        }
+
+        // --- Função para Definir o Idioma ---
+        function setLanguage(lang) {
+            if (translations[lang]) {
+                applyTranslation(lang);
+                localStorage.setItem('rtsc_lang', lang); // Salva a preferência
+                 // Fecha o dropdown se estiver aberto
+                const langDetails = document.getElementById('lang-details');
+                 if (langDetails) langDetails.open = false;
+            } else {
+                console.error(`Idioma '${lang}' não suportado.`);
+            }
+        }
+        
+        // --- Funções Originais dos Carrosséis (Modificadas para buscar texto traduzido) ---
+         function updateCarouselContent(lang = localStorage.getItem('rtsc_lang') || 'pt') {
+             const currentTranslations = translations[lang];
+             const titleEl = document.getElementById('carousel-title');
+             const descEl = document.getElementById('carousel-desc');
+
+             if(titleEl && descEl && currentTranslations) {
+                 const titleKey = `area_${carouselIndex}_title`;
+                 const descKey = `area_${carouselIndex}_desc`;
+                 // Fallback para chave não encontrada
+                 titleEl.textContent = currentTranslations[titleKey] || translations['pt'][titleKey] || '...';
+                 descEl.textContent = currentTranslations[descKey] || translations['pt'][descKey] || '...';
+             }
+         }
+
+        function updateAboutCarouselContent(lang = localStorage.getItem('rtsc_lang') || 'pt') {
+             const currentTranslations = translations[lang];
+             const titleEl = document.getElementById('about-carousel-title');
+             const descEl = document.getElementById('about-carousel-desc');
+
+            if(titleEl && descEl && currentTranslations) {
+                 const titleKey = `about_mobile_${aboutCarouselIndex}_title`;
+                 const descKey = `about_mobile_${aboutCarouselIndex}_desc`;
+                  // Fallback para chave não encontrada
+                 titleEl.textContent = currentTranslations[titleKey] || translations['pt'][titleKey] || '...';
+                 descEl.textContent = currentTranslations[descKey] || translations['pt'][descKey] || '...';
+             }
+         }
+
+
+        function updateCarousel() {
+            const card = document.getElementById('carousel-card');
+            const indicatorsEl = document.getElementById('carousel-indicators');
+             if (!card || !indicatorsEl) return;
+            
+             // ATUALIZADO: Chamar explicitamente a atualização de conteúdo
+             updateCarouselContent(); 
+
+            // Lógica de vídeo e indicadores (inalterada)
+            const allVideos = document.querySelectorAll('.area-video');
+            allVideos.forEach((video, index) => { 
+                if (index === carouselIndex) {
+                    video.classList.remove('opacity-0'); video.classList.add('opacity-100'); video.play().catch(e => console.warn("Video play interrupted")); 
+                } else {
+                    video.classList.remove('opacity-100'); video.classList.add('opacity-0'); video.pause(); 
+                }
+            }); 
+             indicatorsEl.innerHTML = '';
+             // ATUALIZADO: Usar o número 5 diretamente ou `Object.keys(translations.pt).filter(k => k.startsWith('area_') && k.endsWith('_title')).length` se dinâmico
+             for(let i = 0; i < 5; i++) { 
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator' + (i === carouselIndex ? ' active' : '');
+                indicatorsEl.appendChild(indicator);
+             } 
+            card.style.animation = 'none'; setTimeout(() => { card.style.animation = 'fadeInUp 0.8s ease-out'; }, 10);
+        }
+
+        function nextCarousel() { carouselIndex = (carouselIndex + 1) % 5; updateCarousel(); } // Usar 5 (número de áreas)
+        function prevCarousel() { carouselIndex = (carouselIndex - 1 + 5) % 5; updateCarousel(); } // Usar 5
+
+        function updateAboutCarousel() {
+            const card = document.getElementById('about-carousel-card');
+            const indicatorsEl = document.getElementById('about-carousel-indicators');
+             if (!card || !indicatorsEl) return;
+            
+             // ATUALIZADO: Chamar explicitamente a atualização de conteúdo
+             updateAboutCarouselContent(); 
+
+            // Lógica de indicadores (inalterada)
+             indicatorsEl.innerHTML = '';
+             // ATUALIZADO: Usar o número 4 diretamente ou `Object.keys(translations.pt).filter(k => k.startsWith('about_mobile_') && k.endsWith('_title')).length` se dinâmico
+             for(let i = 0; i < 4; i++) { 
+                 const indicator = document.createElement('div');
+                indicator.className = 'indicator' + (i === aboutCarouselIndex ? ' active' : '');
+                indicatorsEl.appendChild(indicator);
+             } 
+            card.style.animation = 'none'; setTimeout(() => { card.style.animation = 'fadeInUp 0.8s ease-out'; }, 10);
+        }
+
+        function nextAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex + 1) % 4; updateAboutCarousel(); } // Usar 4 (número de cards about)
+        function prevAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex - 1 + 4) % 4; updateAboutCarousel(); } // Usar 4
+
+
+        // --- Event Listener Principal ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Animação Hero Scroll (inalterada)
+            const heroTextContent = document.getElementById('hero-text-content');
+            const heroScrollMask = document.getElementById('hero-scroll-mask');
+            if (heroTextContent && heroScrollMask) {
+                 window.addEventListener('scroll', () => {
+                    const scrollPosition = window.scrollY;
+                    const animationDistance = 500; 
+                    const progress = Math.min(1, scrollPosition / animationDistance);
+                    // heroTextContent.style.opacity = (1 - progress).toString(); // Linha comentada ou removida
+                    heroScrollMask.style.opacity = progress.toString();
+                 });
+            }
+
+             // ATUALIZADO: Intersection Observer para animação do vídeo "Sobre"
+             const aboutSection = document.getElementById('sobre-rtsc');
+             const aboutVideoContainer = document.getElementById('about-video-anim-container');
+
+             if(aboutSection && aboutVideoContainer) {
+                 const observer = new IntersectionObserver((entries) => {
+                     entries.forEach(entry => {
+                         const ratio = entry.intersectionRatio;
+                         // Ajustar escala final para cobrir totalmente (ex: 2.0 ou 2.5)
+                         const scale = ratio * 2.5; 
+                         const rotate = ratio * 180; 
+                         
+                         aboutVideoContainer.style.opacity = ratio;
+                         aboutVideoContainer.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rotate}deg)`;
+
+                     });
+                 }, {
+                     threshold: Array.from({ length: 101 }, (_, i) => i / 100) // Gera thresholds de 0.0 a 1.0
+                 });
+                 observer.observe(aboutSection);
+             }
+
+
+            // ATUALIZADO: Inicialização de Idioma
+            const userPrefLang = localStorage.getItem('rtsc_lang') || 'pt'; // Default 'pt'
+            setLanguage(userPrefLang); // Aplica o idioma inicial
+
+            // ATUALIZADO: Listeners para botões de idioma
+            document.querySelectorAll('.lang-select-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const lang = e.currentTarget.getAttribute('data-lang');
+                    setLanguage(lang);
+                });
+            });
+
+            // Inicializadores dos Carrosséis (inalterados, mas agora chamam funções que usam traduções)
+            const prevAreaButton = document.getElementById('carousel-prev');
+            const nextAreaButton = document.getElementById('carousel-next');
+            if (prevAreaButton && nextAreaButton) { updateCarousel(); prevAreaButton.onclick = prevCarousel; nextAreaButton.onclick = nextCarousel; }
+
+            const prevAboutButton = document.getElementById('about-carousel-prev');
+            const nextAboutButton = document.getElementById('about-carousel-next');
+            if (prevAboutButton && nextAboutButton) { updateAboutCarousel(); prevAboutButton.onclick = prevAboutCarousel; nextAboutButton.onclick = nextAboutCarousel; }
+           
+             // ATUALIZADO: Inicializar ícones Lucide DEPOIS do DOM carregado
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+" selected from the Canvas document RTSC_Website.html.
+
