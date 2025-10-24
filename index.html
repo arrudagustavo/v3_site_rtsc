@@ -43,7 +43,7 @@
                         bounce: {
                              '0%, 100%': { transform: 'translateY(5px)' },
                              '50%': { transform: 'translateY(-5px)' },
-                        }
+                        },
                     },
                 }
             }
@@ -138,6 +138,29 @@
              box-shadow: none; /* Garante que não tenha sombra */
         }
 
+        /* Estilos para Animação de Título por Palavra */
+        .title-word-wrapper {
+            display: inline-block; 
+            overflow: hidden; 
+            vertical-align: bottom; 
+        }
+        .title-word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(100%); 
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform; 
+            margin-right: 0.25em; /* Ajuste fino do espaço */
+        }
+         /* Garante que o espaço seja adicionado apenas entre palavras, não no final */
+        .title-word-wrapper:last-child .title-word {
+             margin-right: 0;
+        }
+
+        .title-word.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="bg-primary-bg text-text-white font-sans overflow-x-hidden">
@@ -150,17 +173,9 @@
 
     <!-- ======= Header ======= -->
     <header class="sticky top-0 z-30 backdrop-blur-sm border-b border-border-gray">
-        <!-- Container principal: Revertido para a estrutura original -->
-        <div class="container mx-auto max-w-7xl px-4 py-4 flex flex-col items-center md:flex-row md:justify-between">
-            
-             <!-- ATUALIZADO: Div interna para Logo + Seletor (Mobile) -->
+        <div class="container relative mx-auto max-w-7xl px-4 py-4 flex flex-col items-center md:flex-row md:justify-between">
              <div class="relative w-full flex justify-center items-center md:w-auto md:justify-start">
-                 <!-- Logo -->
                  <img src="https://d335luupugsy2.cloudfront.net/cms/files/691549/1693434942/$20c7zqr5hod" alt="RTSC Logo" class="h-12 w-auto">
-                 
-                 <!-- Seletor de Idioma -->
-                 <!-- Mobile: absolute right-0 top-1/2 -translate-y-1/2 -->
-                 <!-- Desktop: md:relative md:ml-6 (agora dentro da nav) -->
                  <details class="absolute right-0 top-1/2 -translate-y-1/2 md:relative md:top-auto md:right-auto md:translate-y-0 md:ml-6" id="lang-details">
                     <summary class="flex items-center gap-1 cursor-pointer list-none text-xs sm:text-sm font-medium text-text-white hover:text-accent-gold transition-colors" title="Selecionar Idioma">
                         <i data-lucide="globe" class="w-4 h-4 text-accent-gold"></i>
@@ -174,16 +189,11 @@
                     </div>
                  </details>
              </div>
-            
-            <!-- Navegação -->
-            <!-- Mobile: w-full flex justify-center mt-4 -->
-            <!-- Desktop: md:w-auto md:mt-0 md:ml-auto -->
             <nav class="w-full flex items-center justify-center gap-4 md:gap-6 mt-4 md:mt-0 md:w-auto md:ml-auto">
                 <a href="#nossa-historia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_who_we_are">Quem somos</a>
                 <a href="#area-atuacao" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_area">Área de atuação</a>
                 <a href="#midia" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_media">Na Mídia</a>
                 <a href="#contato" class="text-xs sm:text-sm font-medium text-text-white transition-colors hover:text-accent-gold" data-i18n="menu_contact">Contato</a>
-                <!-- Seletor de Idioma movido para a div acima no mobile -->
             </nav>
         </div>
     </header>
@@ -210,15 +220,15 @@
         <!-- ======= History Section ======= -->
         <section id="nossa-historia" class="container mx-auto max-w-7xl py-16 md:py-24 px-4 scroll-mt-28 md:scroll-mt-20">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <!-- Adicionado 'animate-card-on-scroll' -->
                 <div class="animate-card-on-scroll">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4"> <span data-i18n="history_title_part1">Nossa</span> <span class="gradient-text" data-i18n="history_title_part2">História</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words"> 
+                         <span data-i18n="history_title_part1">Nossa</span> <span class="gradient-text" data-i18n="history_title_part2">História</span>
+                    </h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mb-10"></div>
                     <p class="text-base md:text-lg text-text-gray leading-relaxed" data-i18n="history_text">
                         Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.
                     </p>
                 </div>
-                <!-- Adicionado 'animate-card-on-scroll' e delay -->
                 <div class="w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-lg border-4 border-border-gray animate-card-on-scroll delay-100">
                     <video class="w-full h-full object-cover object-center" autoplay muted loop playsinline> <source src="imagens/Nossa história (1).mp4" type="video/mp4"> </video>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
@@ -226,18 +236,17 @@
             </div>
         </section>
 
-        <!-- ======= Numbers Section (ALTERADA para Timeline Mobile) ======= -->
+        <!-- ======= Numbers Section ======= -->
         <section id="numeros-rtsc" class="py-16 md:py-32 px-4">
              <div class="container mx-auto max-w-4xl relative">
                  <div class="text-center mb-16 md:mb-24">
-                     <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="numbers_title_part1">Números</span> <span class="gradient-text" data-i18n="numbers_title_part2">da RTSC</span></h2>
+                     <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words">
+                         <span data-i18n="numbers_title_part1">Números</span> <span class="gradient-text" data-i18n="numbers_title_part2">da RTSC</span>
+                    </h2>
                      <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                  </div>
-                 <!-- Linha central da timeline (visível sempre) -->
                  <div class="block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent-gold/50 to-transparent" style="transform: translateX(-50%);"></div>
-                 
                  <div class="space-y-8 md:space-y-16">
-                     <!-- Item 1: Ativos -->
                      <div class="flex flex-row items-center gap-4 md:gap-8">
                          <div class="w-1/2 text-right">
                             <div class="p-4 animate-card-on-scroll text-right">
@@ -248,8 +257,6 @@
                          <div class="block timeline-dot"></div>
                          <div class="w-1/2 block"></div>
                      </div>
-
-                     <!-- Item 2: Colaboradores -->
                      <div class="flex flex-row-reverse items-center gap-4 md:gap-8">
                           <div class="w-1/2 text-left">
                             <div class="p-4 animate-card-on-scroll delay-100 text-left">
@@ -260,8 +267,6 @@
                          <div class="block timeline-dot"></div>
                          <div class="w-1/2 block"></div>
                      </div>
-
-                     <!-- Item 3: Investidores -->
                      <div class="flex flex-row items-center gap-4 md:gap-8">
                          <div class="w-1/2 text-right">
                             <div class="p-4 animate-card-on-scroll delay-200 text-right">
@@ -279,10 +284,11 @@
         <!-- ======= About Section ======= -->
         <section id="sobre-rtsc" class="relative py-16 md:py-24 px-0">
              <div id="about-video-anim-wrapper" class="absolute inset-0 z-0 overflow-hidden">
+                 <!-- ATUALIZADO: Trocado video por img -->
                  <div id="about-video-anim-container" 
                       class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 scale-0 rotate-0 opacity-0 transition-transform duration-500 ease-out transition-opacity duration-500 ease-out">
                     <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> 
-                        <video class="w-full h-full object-cover object-top" autoplay muted loop playsinline> <source src="imagens/Sobre a RTSC (1).mp4" type="video/mp4"> </video>
+                        <img src="imagens/Sobre a RTSC (1).jpg" alt="Construção de prédio moderno" class="w-full h-full object-cover object-top">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     </div>
                  </div>
@@ -290,7 +296,9 @@
 
             <div class="relative z-10 container mx-auto max-w-7xl px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="about_title_part1">Sobre a</span> <span class="gradient-text" data-i18n="about_title_part2">RTSC</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words">
+                        <span data-i18n="about_title_part1">Sobre a</span> <span class="gradient-text" data-i18n="about_title_part2">RTSC</span>
+                    </h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
                 <div> 
@@ -335,7 +343,9 @@
         <!-- ======= Mission Section ======= -->
         <section class="container mx-auto max-w-7xl py-16 md:py-24 px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="vmg_title_part1">Missão, Visão e</span> <span class="gradient-text" data-i18n="vmg_title_part2">Valores</span></h2>
+                <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words">
+                    <span data-i18n="vmg_title_part1">Missão, Visão e</span> <span class="gradient-text" data-i18n="vmg_title_part2">Valores</span>
+                </h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -378,7 +388,9 @@
             <div class="absolute inset-0 z-1 bg-primary-bg/60"></div>
             <div class="container mx-auto max-w-7xl relative z-10">
                 <div class="text-center mb-16 animate-fade-in-up">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4 whitespace-nowrap"><span data-i18n="areas_title_part1">Áreas de</span> <span class="gradient-text" data-i18n="areas_title_part2">Atuação</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 whitespace-nowrap animate-title-words">
+                        <span data-i18n="areas_title_part1">Áreas de</span> <span class="gradient-text" data-i18n="areas_title_part2">Atuação</span>
+                    </h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
                 <div id="carousel-card" class="bg-gradient-to-br from-gray-800/20 to-gray-700/20 border border-accent-gold-dark/30 rounded-xl p-6 md:p-12 min-h-[350px] flex flex-col justify-between animate-card-on-scroll delay-100 text-center">
@@ -399,23 +411,25 @@
         <section id="midia" class="py-16 md:py-24 px-4 bg-gradient-to-b from-primary-bg/50 to-gray-900/30 scroll-mt-28 md:scroll-mt-20">
             <div class="container mx-auto max-w-7xl">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="media_title_part1">Na</span> <span class="gradient-text" data-i18n="media_title_part2">Mídia</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words">
+                        <span data-i18n="media_title_part1">Na</span> <span class="gradient-text" data-i18n="media_title_part2">Mídia</span>
+                    </h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll">
                          <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="newspaper" class="w-8 h-8"></i></div> </div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card1_title">B3 registra alta expressiva de investidores por CPF</h3>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-text-white" data-i18n="media_card1_title">B3 registra alta expressiva de investidores por CPF</h3>
                         <a href="https://www.terra.com.br/noticias/b3-registra-alta-expressiva-de-investidores-por-cpf,d8b11b525430093f78d385f1ea1e88f7vkkwnors.html#:~:text=Uma%20recente%20pesquisa%20publicada%20pela,individuais%20de%20negocia%C3%A7%C3%A3o%20dos%20investidores" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
                     <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll delay-100">
                          <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="radio" class="w-8 h-8"></i></div> </div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card2_title">Fundos imobiliários são uma boa opção?</h3>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-text-white" data-i18n="media_card2_title">Fundos imobiliários são uma boa opção?</h3>
                         <a href="https://valor.globo.com/patrocinado/dino/noticia/2023/06/01/fundos-imobiliarios-sao-uma-boa-opcao-de-investimento.ghtml" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
                     <div class="glass text-center rounded-lg p-4 md:p-6 animate-card-on-scroll delay-200">
                          <div class="icon-container"> <div class="glow-gold"></div> <div class="icon-wrapper"><i data-lucide="tv" class="w-8 h-8"></i></div> </div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 text-accent-gold" data-i18n="media_card3_title">Queda da Selic inicia um novo ciclo na economia</h3>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 text-text-white" data-i18n="media_card3_title">Queda da Selic inicia um novo ciclo na economia</h3>
                         <a href="https://www.terra.com.br/noticias/queda-da-selic-inicia-um-novo-ciclo-na-economia,3405c90b3bb421738de333f4a574aef0q0i0zwlj.html" target="_blank" rel="noopener noreferrer" class="font-bold text-accent-gold-dark hover:text-accent-gold transition-colors text-xs md:text-sm mt-4 inline-block" data-i18n="media_card_link">Saiba Mais &rarr;</a>
                     </div>
                 </div>
@@ -426,7 +440,9 @@
         <section id="contato" class="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/30 to-primary-bg">
             <div class="container mx-auto max-w-7xl">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4"><span data-i18n="contact_title_part1">Entre em</span> <span class="gradient-text" data-i18n="contact_title_part2">Contato</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 animate-title-words">
+                        <span data-i18n="contact_title_part1">Entre em</span> <span class="gradient-text" data-i18n="contact_title_part2">Contato</span>
+                    </h2>
                     <div class="w-24 h-1 bg-gradient-to-r from-accent-gold-dark to-accent-gold rounded-full mx-auto"></div>
                 </div>
                 <div class="max-w-2xl mx-auto">
@@ -557,7 +573,7 @@
                 'hero_title_part1': 'Somos un holding enfocado en el ', 'hero_title_part2': 'desarrollo del sector Inmobiliario', 'hero_title_part3': ' y Turístico en Brasil.',
                 'hero_subtitle': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.', 'hero_button': 'CONOZCA RTSC',
                 'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
-                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas las regiones de Brasil, generando negocios innovadores y abriendo nuevas oportunidades de inversión.',
+                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas las regiones de Brasil, generando negocios inovadores y abriendo nuevas oportunidades de inversión.',
                  'numbers_title_part1': 'Números', 'numbers_title_part2': 'de RTSC',
                 'count_assets_value': '+10 mil M', 'count_assets_desc': 'en activos bajo custodia', // mil millones
                 'count_collaborators_value': '+1.000', 'count_collaborators_desc': 'colaboradores',
@@ -571,7 +587,7 @@
                 'vmg_title_part1': 'Misión, Visión y', 'vmg_title_part2': 'Valores',
                 'mission_title': 'Misión', 'mission_item1': '• Impulsar el capital humano y organizacional de forma sostenible.', 'mission_item2': '• Generar valor y desarrollo a través de inversiones en el sector inmobiliario.',
                 'vision_title': 'Visión', 'vision_item1': '• Ser el holding de referencia en inversiones inmobiliarias y turísticas.', 'vision_item2': '• Promover una transformación positiva en la economía brasileña.',
-                'values_title': 'Valores', 'values_item1': '• Transparencia e integridad en todas las operaciones.', 'values_item2': '• Innovação contínua e excelência nos resultados.',
+                'values_title': 'Valores', 'values_item1': '• Transparência e integridade em todas as operações.', 'values_item2': '• Innovação contínua e excelência nos resultados.',
                 'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Actuación',
                 'area_carousel_title': '...', 'area_carousel_desc': '...',
                 'media_title_part1': 'En los', 'media_title_part2': 'Medios',
@@ -648,38 +664,52 @@
             const currentTranslations = translations[lang];
             if (!currentTranslations) return; // Idioma não encontrado
 
-            // Traduz elementos com data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (currentTranslations[key] !== undefined) {
-                    element.innerHTML = currentTranslations[key]; // Usar innerHTML para permitir tags como <br>, <span>
-                } else {
-                    // Não loga mais warning para chaves dinâmicas dos carrosséis
-                    if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_')) {
-                         console.warn(`Chave de tradução não encontrada para '${key}' no idioma '${lang}'`);
-                    }
-                }
+            // Salva o HTML original dos títulos antes de traduzir/animar
+            document.querySelectorAll('.animate-title-words').forEach(title => {
+                 if (!title.dataset.originalHtml) { // Salva apenas na primeira vez
+                    title.dataset.originalHtml = title.innerHTML; 
+                 }
             });
 
-            // Atualiza o atributo lang da tag html
-            document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; // Ex: pt, en, es, zh-CN
+            // Traduz elementos com data-i18n (exceto os títulos animados)
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (currentTranslations[key] !== undefined && !element.closest('.animate-title-words')) {
+                    element.innerHTML = currentTranslations[key]; 
+                } else if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words')) {
+                     // console.warn(`Chave de tradução não encontrada para '${key}' no idioma '${lang}'`);
+                 }
+            });
+            
+             // Traduz especificamente os títulos que serão animados, restaurando a estrutura original antes
+             document.querySelectorAll('.animate-title-words').forEach(title => {
+                 if (title.dataset.originalHtml) {
+                    title.innerHTML = title.dataset.originalHtml; // Restaura spans originais
+                    title.querySelectorAll('[data-i18n]').forEach(span => {
+                         const key = span.getAttribute('data-i18n');
+                         if (currentTranslations[key] !== undefined) {
+                             span.textContent = currentTranslations[key]; // Traduz o texto dentro do span
+                         }
+                    });
+                 }
+             });
 
-            // Atualiza a label do idioma atual no header
+            document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; 
+
             const currentLangLabel = document.getElementById('current-lang-label');
             if (currentLangLabel) {
                 currentLangLabel.textContent = langLabels[lang] || lang.toUpperCase();
             }
-             // ATUALIZADO: Atualiza o conteúdo dos carrosséis com base no idioma
             updateCarouselContent(lang);
             updateAboutCarouselContent(lang);
+            resetAndObserveTitles(); // Reanima títulos com novo texto/estrutura
         }
 
         // --- Função para Definir o Idioma ---
         function setLanguage(lang) {
             if (translations[lang]) {
                 applyTranslation(lang);
-                localStorage.setItem('rtsc_lang', lang); // Salva a preferência
-                 // Fecha o dropdown se estiver aberto
+                localStorage.setItem('rtsc_lang', lang); 
                 const langDetails = document.getElementById('lang-details');
                  if (langDetails) langDetails.open = false;
             } else {
@@ -687,7 +717,7 @@
             }
         }
         
-        // --- Funções Originais dos Carrosséis (Modificadas para buscar texto traduzido) ---
+        // --- Funções Originais dos Carrosséis ---
          function updateCarouselContent(lang = localStorage.getItem('rtsc_lang') || 'pt') {
              const currentTranslations = translations[lang];
              const titleEl = document.getElementById('carousel-title');
@@ -778,6 +808,105 @@
         function nextAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex + 1) % 4; updateAboutCarousel(); } 
         function prevAboutCarousel() { aboutCarouselIndex = (aboutCarouselIndex - 1 + 4) % 4; updateAboutCarousel(); } 
 
+        // --- Funções para Animação de Título por Palavra ---
+        function splitTitleIntoWords(titleElement) {
+             const nodes = Array.from(titleElement.childNodes); // Pega nós filhos (texto e spans)
+             titleElement.innerHTML = ''; // Limpa o H2
+
+             let wordIndex = 0; // Para calcular delay
+
+             nodes.forEach(node => {
+                 if (node.nodeType === Node.TEXT_NODE) {
+                     const text = node.textContent.trim();
+                     const words = text.split(/\s+/);
+                     words.forEach(word => {
+                         if (word.length > 0) {
+                             const wrapperSpan = document.createElement('span');
+                             wrapperSpan.className = 'title-word-wrapper';
+                             const wordSpan = document.createElement('span');
+                             wordSpan.className = 'title-word';
+                             wordSpan.textContent = word + '\u00A0';
+                             wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; // Aplica delay
+                             wrapperSpan.appendChild(wordSpan);
+                             titleElement.appendChild(wrapperSpan);
+                             wordIndex++;
+                         }
+                     });
+                 } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
+                     // É um span (provavelmente o gradiente)
+                     const wrapperSpan = document.createElement('span');
+                     wrapperSpan.className = 'title-word-wrapper';
+                     
+                     const wordSpan = document.createElement('span');
+                     wordSpan.className = 'title-word';
+                      // Mantém o conteúdo e classes do span original DENTRO do wordSpan
+                     wordSpan.innerHTML = node.innerHTML + '\u00A0'; 
+                     node.classList.forEach(cls => wordSpan.classList.add(cls)); // Copia classes como gradient-text
+                     wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; // Aplica delay
+                      
+                     wrapperSpan.appendChild(wordSpan);
+                     titleElement.appendChild(wrapperSpan);
+                     wordIndex++;
+                 }
+             });
+             // Remove último espaço adicionado
+              const lastWrapper = titleElement.querySelector('.title-word-wrapper:last-child .title-word');
+              if (lastWrapper) {
+                 lastWrapper.textContent = lastWrapper.textContent.trim();
+              }
+         }
+
+
+        let titleWordObserver;
+         function initializeTitleWordObserver() {
+             const titlesToAnimate = document.querySelectorAll('.animate-title-words');
+             titleWordObserver = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                     if (entry.isIntersecting) {
+                         const titleElement = entry.target;
+                         
+                         // Garante que o HTML original está salvo antes de dividir
+                         if (!titleElement.dataset.originalHtml) {
+                              titleElement.dataset.originalHtml = titleElement.innerHTML;
+                         }
+
+                         splitTitleIntoWords(titleElement); // Divide em palavras AGORA
+                         
+                         const wordSpans = titleElement.querySelectorAll('.title-word');
+                         // Força reflow para garantir que a transição ocorra após o delay
+                          void titleElement.offsetWidth; 
+                          
+                         wordSpans.forEach(span => {
+                             span.classList.add('is-visible');
+                         });
+
+                         titleWordObserver.unobserve(titleElement); // Anima apenas uma vez
+                     }
+                 });
+             }, { threshold: 0.2 }); 
+
+             titlesToAnimate.forEach(title => {
+                 // Reset inicial antes de observar
+                  if(title.dataset.originalHtml) {
+                      title.innerHTML = title.dataset.originalHtml; // Restaura HTML original
+                  }
+                  // Garante que spans internos (se recriados) comecem invisíveis
+                   title.querySelectorAll('.title-word').forEach(span => {
+                       span.classList.remove('is-visible');
+                       span.style.opacity = '0';
+                       span.style.transform = 'translateX(100%)';
+                   });
+                 titleWordObserver.observe(title);
+             });
+         }
+         
+         function resetAndObserveTitles() {
+             if (titleWordObserver) {
+                 titleWordObserver.disconnect();
+             }
+             initializeTitleWordObserver(); // Re-inicializa
+         }
+
 
         // --- Event Listener Principal ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -810,7 +939,7 @@
                  observer.observe(aboutSection);
              }
 
-             // ATUALIZADO: Intersection Observer para animação dos cards
+             // Intersection Observer para animação dos cards
              const cardsToAnimate = document.querySelectorAll('.animate-card-on-scroll');
              const cardObserver = new IntersectionObserver((entries) => {
                  entries.forEach((entry, index) => {
@@ -824,6 +953,9 @@
              cardsToAnimate.forEach(card => {
                  cardObserver.observe(card);
              });
+
+             // Inicializa observer dos títulos
+             initializeTitleWordObserver();
 
 
             // Inicialização de Idioma
@@ -852,3 +984,4 @@
     </script>
 </body>
 </html>
+
