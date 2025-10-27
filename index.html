@@ -43,7 +43,7 @@
                         bounce: {
                              '0%, 100%': { transform: 'translateY(5px)' },
                              '50%': { transform: 'translateY(-5px)' },
-                        },
+                        }
                     },
                 }
             }
@@ -86,7 +86,8 @@
         .glow-gold { 
             position: absolute; inset: 0; border-radius: 0.75rem; 
             background: linear-gradient(to right bottom, rgba(237, 199, 124, 0.2), rgba(141, 109, 62, 0.2)); 
-            box-shadow: 0 0 15px 5px rgba(237, 199, 124, 0.3); 
+            /* ATUALIZADO: Removido box-shadow padrão */
+            /* box-shadow: 0 0 15px 5px rgba(237, 199, 124, 0.3); */
             transform: translateZ(10px); 
             transition: box-shadow 0.3s ease;
         }
@@ -204,12 +205,14 @@
         <div class="absolute inset-0 bg-primary-bg/50 z-0"></div>
         <div id="hero-scroll-mask" class="absolute inset-0 bg-primary-bg z-10 pointer-events-none" style="opacity: 0;"></div>
         <div id="hero-text-content" class="relative z-15 container mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-8">
-                <span data-i18n="hero_title_part1">Somos uma holding com foco no </span>
-                <span class="gradient-text" data-i18n="hero_title_part2">desenvolvimento do setor Imobiliário</span>
-                <span data-i18n="hero_title_part3"> e do Turismo no Brasil.</span>
+            <!-- ATUALIZADO: H1 dividido em spans para gradiente e tradução -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-8" data-i18n-ref="hero_title_structure">
+                <span data-i18n="hero_title_p1">Transformando </span>
+                <span class="gradient-text" data-i18n="hero_title_p2">Visões</span>
+                <span data-i18n="hero_title_p3"> em </span>
+                <span class="gradient-text" data-i18n="hero_title_p4">Realidade.</span>
             </h1>
-            <p class="text-base md:text-lg text-text-gray max-w-2xl mb-12 mx-auto" data-i18n="hero_subtitle">Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.</p>
+            <p class="text-base md:text-lg text-text-gray max-w-2xl mb-12 mx-auto" data-i18n="hero_subtitle">Liderando o futuro do mercado imobiliário e turístico com inovação, excelência e crescimento sustentável.</p>
             <a href="#nossa-historia" class="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-accent-gold-dark to-accent-gold text-black font-bold rounded-full cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-accent-gold/30 animate-bounce" data-i18n="hero_button">
                 CONHEÇA A RTSC
             </a>
@@ -284,7 +287,6 @@
         <!-- ======= About Section ======= -->
         <section id="sobre-rtsc" class="relative py-16 md:py-24 px-0">
              <div id="about-video-anim-wrapper" class="absolute inset-0 z-0 overflow-hidden">
-                 <!-- ATUALIZADO: Trocado video por img -->
                  <div id="about-video-anim-container" 
                       class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 scale-0 rotate-0 opacity-0 transition-transform duration-500 ease-out transition-opacity duration-500 ease-out">
                     <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> 
@@ -485,8 +487,9 @@
         const translations = {
             'pt': { /* Todas as chaves em Português */
                 'menu_who_we_are': 'Quem somos', 'menu_area': 'Área de atuação', 'menu_media': 'Na Mídia', 'menu_contact': 'Contato',
-                'hero_title_part1': 'Somos uma holding com foco no ', 'hero_title_part2': 'desenvolvimento do setor Imobiliário', 'hero_title_part3': ' e do Turismo no Brasil.',
-                'hero_subtitle': 'Uma holding que reúne empresas atuantes em diversas áreas, com foco no turismo.', 'hero_button': 'CONHEÇA A RTSC',
+                /* ATUALIZADO: hero_title dividido */
+                'hero_title_p1': 'Transformando ', 'hero_title_p2': 'Visões', 'hero_title_p3': ' em ', 'hero_title_p4': 'Realidade.',
+                'hero_subtitle': 'Liderando o futuro do mercado imobiliário e turístico com inovação, excelência e crescimento sustentável.', 'hero_button': 'CONHEÇA A RTSC',
                 'history_title_part1': 'Nossa', 'history_title_part2': 'História',
                 'history_text': 'Nossa história começa em 2014 e desde então nunca paramos de buscar oportunidades com desenvolvimento sustentável. Promovemos impacto real na economia em todas as regiões do Brasil, gerando negócios inovadores e abrindo novas oportunidades de investimentos.',
                  'numbers_title_part1': 'Números', 'numbers_title_part2': 'da RTSC', 
@@ -527,8 +530,9 @@
             },
             'en': { /* Todas as chaves em Inglês */
                 'menu_who_we_are': 'Who We Are', 'menu_area': 'Areas of Operation', 'menu_media': 'In The Media', 'menu_contact': 'Contact',
-                'hero_title_part1': 'We are a holding company focused on the ', 'hero_title_part2': 'development of the Real Estate', 'hero_title_part3': ' and Tourism sectors in Brazil.',
-                'hero_subtitle': 'A holding company that brings together companies operating in various areas, with a focus on tourism.', 'hero_button': 'DISCOVER RTSC',
+                 /* ATUALIZADO: hero_title dividido */
+                'hero_title_p1': 'Transforming ', 'hero_title_p2': 'Visions', 'hero_title_p3': ' into ', 'hero_title_p4': 'Reality.',
+                'hero_subtitle': 'Leading the future of the real estate and tourism market with innovation, excellence, and sustainable growth.', 'hero_button': 'DISCOVER RTSC',
                 'history_title_part1': 'Our', 'history_title_part2': 'History',
                 'history_text': 'Our history began in 2014, and since then, we have never stopped seeking opportunities with sustainable development. We promote real economic impact in all regions of Brazil, generating innovative businesses and opening new investment opportunities.',
                  'numbers_title_part1': 'RTSC', 'numbers_title_part2': 'NUMBERS',
@@ -570,10 +574,11 @@
             },
             'es': { /* Todas as chaves em Espanhol */
                 'menu_who_we_are': 'Quiénes Somos', 'menu_area': 'Áreas de Actuación', 'menu_media': 'En los Medios', 'menu_contact': 'Contacto',
-                'hero_title_part1': 'Somos un holding enfocado en el ', 'hero_title_part2': 'desarrollo del sector Inmobiliario', 'hero_title_part3': ' y Turístico en Brasil.',
-                'hero_subtitle': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.', 'hero_button': 'CONOZCA RTSC',
+                 /* ATUALIZADO: hero_title dividido */
+                'hero_title_p1': 'Transformando ', 'hero_title_p2': 'Visiones', 'hero_title_p3': ' en ', 'hero_title_p4': 'Realidad.',
+                'hero_subtitle': 'Liderando el futuro del mercado inmobiliario y turístico con innovación, excelencia y crecimiento sostenible.', 'hero_button': 'CONOZCA RTSC',
                 'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
-                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas las regiones de Brasil, generando negocios inovadores y abriendo nuevas oportunidades de inversión.',
+                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas as regiones de Brasil, generando negocios inovadores y abriendo nuevas oportunidades de inversión.',
                  'numbers_title_part1': 'Números', 'numbers_title_part2': 'de RTSC',
                 'count_assets_value': '+10 mil M', 'count_assets_desc': 'en activos bajo custodia', // mil millones
                 'count_collaborators_value': '+1.000', 'count_collaborators_desc': 'colaboradores',
@@ -613,8 +618,9 @@
             },
             'zh': { /* Todas as chaves em Mandarim */
                 'menu_who_we_are': '关于我们', 'menu_area': '业务领域', 'menu_media': '媒体报道', 'menu_contact': '联系方式',
-                'hero_title_part1': '我们是一家专注于巴西', 'hero_title_part2': '房地产和旅游业发展', 'hero_title_part3': '的控股公司。',
-                'hero_subtitle': '一家汇集了在不同领域运营的公司，专注于旅游业的控股公司。', 'hero_button': '了解 RTSC',
+                 /* ATUALIZADO: hero_title dividido */
+                'hero_title_p1': '将', 'hero_title_p2': '愿景', 'hero_title_p3': '变为', 'hero_title_p4': '现实。',
+                'hero_subtitle': '以创新、卓越和可持续增长引领房地产和旅游市场的未来。', 'hero_button': '了解 RTSC',
                 'history_title_part1': '我们的', 'history_title_part2': '历史',
                 'history_text': '我们的历史始于 2014 年，从那时起，我们从未停止寻求可持续发展的机会。我们在巴西所有地区推动真正的经济影响，创造创新的业务并开辟新的投资机会。',
                  'numbers_title_part1': 'RTSC', 'numbers_title_part2': '数据',
@@ -670,13 +676,20 @@
                     title.dataset.originalHtml = title.innerHTML; 
                  }
             });
+             // ATUALIZADO: Salva o HTML original do H1
+            const heroTitle = document.querySelector('h1[data-i18n-ref="hero_title_structure"]');
+            if(heroTitle && !heroTitle.dataset.originalHtml) {
+                 heroTitle.dataset.originalHtml = heroTitle.innerHTML;
+            }
+
 
             // Traduz elementos com data-i18n (exceto os títulos animados)
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                if (currentTranslations[key] !== undefined && !element.closest('.animate-title-words')) {
+                 // ATUALIZADO: Exclui H1 e seus filhos
+                if (currentTranslations[key] !== undefined && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
                     element.innerHTML = currentTranslations[key]; 
-                } else if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words')) {
+                } else if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
                      // console.warn(`Chave de tradução não encontrada para '${key}' no idioma '${lang}'`);
                  }
             });
@@ -693,6 +706,17 @@
                     });
                  }
              });
+             
+             // ATUALIZADO: Traduz H1 da Hero Section
+             if(heroTitle && heroTitle.dataset.originalHtml) {
+                 heroTitle.innerHTML = heroTitle.dataset.originalHtml; // Restaura spans
+                 heroTitle.querySelectorAll('[data-i18n]').forEach(span => {
+                     const key = span.getAttribute('data-i18n');
+                     if (currentTranslations[key] !== undefined) {
+                         span.textContent = currentTranslations[key];
+                     }
+                 });
+             }
 
             document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; 
 
