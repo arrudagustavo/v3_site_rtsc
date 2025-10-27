@@ -487,7 +487,6 @@
         const translations = {
             'pt': { /* Todas as chaves em Português */
                 'menu_who_we_are': 'Quem somos', 'menu_area': 'Área de atuação', 'menu_media': 'Na Mídia', 'menu_contact': 'Contato',
-                /* ATUALIZADO: hero_title dividido */
                 'hero_title_p1': 'Transformando ', 'hero_title_p2': 'Visões', 'hero_title_p3': ' em ', 'hero_title_p4': 'Realidade.',
                 'hero_subtitle': 'Liderando o futuro do mercado imobiliário e turístico com inovação, excelência e crescimento sustentável.', 'hero_button': 'CONHEÇA A RTSC',
                 'history_title_part1': 'Nossa', 'history_title_part2': 'História',
@@ -530,7 +529,6 @@
             },
             'en': { /* Todas as chaves em Inglês */
                 'menu_who_we_are': 'Who We Are', 'menu_area': 'Areas of Operation', 'menu_media': 'In The Media', 'menu_contact': 'Contact',
-                 /* ATUALIZADO: hero_title dividido */
                 'hero_title_p1': 'Transforming ', 'hero_title_p2': 'Visions', 'hero_title_p3': ' into ', 'hero_title_p4': 'Reality.',
                 'hero_subtitle': 'Leading the future of the real estate and tourism market with innovation, excellence, and sustainable growth.', 'hero_button': 'DISCOVER RTSC',
                 'history_title_part1': 'Our', 'history_title_part2': 'History',
@@ -574,7 +572,6 @@
             },
             'es': { /* Todas as chaves em Espanhol */
                 'menu_who_we_are': 'Quiénes Somos', 'menu_area': 'Áreas de Actuación', 'menu_media': 'En los Medios', 'menu_contact': 'Contacto',
-                 /* ATUALIZADO: hero_title dividido */
                 'hero_title_p1': 'Transformando ', 'hero_title_p2': 'Visiones', 'hero_title_p3': ' en ', 'hero_title_p4': 'Realidad.',
                 'hero_subtitle': 'Liderando el futuro del mercado inmobiliario y turístico con innovación, excelencia y crecimiento sostenible.', 'hero_button': 'CONOZCA RTSC',
                 'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
@@ -618,7 +615,6 @@
             },
             'zh': { /* Todas as chaves em Mandarim */
                 'menu_who_we_are': '关于我们', 'menu_area': '业务领域', 'menu_media': '媒体报道', 'menu_contact': '联系方式',
-                 /* ATUALIZADO: hero_title dividido */
                 'hero_title_p1': '将', 'hero_title_p2': '愿景', 'hero_title_p3': '变为', 'hero_title_p4': '现实。',
                 'hero_subtitle': '以创新、卓越和可持续增长引领房地产和旅游市场的未来。', 'hero_button': '了解 RTSC',
                 'history_title_part1': '我们的', 'history_title_part2': '历史',
@@ -671,22 +667,15 @@
             if (!currentTranslations) return; // Idioma não encontrado
 
             // Salva o HTML original dos títulos antes de traduzir/animar
-            document.querySelectorAll('.animate-title-words').forEach(title => {
+            document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]').forEach(title => {
                  if (!title.dataset.originalHtml) { // Salva apenas na primeira vez
                     title.dataset.originalHtml = title.innerHTML; 
                  }
             });
-             // ATUALIZADO: Salva o HTML original do H1
-            const heroTitle = document.querySelector('h1[data-i18n-ref="hero_title_structure"]');
-            if(heroTitle && !heroTitle.dataset.originalHtml) {
-                 heroTitle.dataset.originalHtml = heroTitle.innerHTML;
-            }
-
 
             // Traduz elementos com data-i18n (exceto os títulos animados)
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                 // ATUALIZADO: Exclui H1 e seus filhos
                 if (currentTranslations[key] !== undefined && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
                     element.innerHTML = currentTranslations[key]; 
                 } else if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
@@ -695,7 +684,7 @@
             });
             
              // Traduz especificamente os títulos que serão animados, restaurando a estrutura original antes
-             document.querySelectorAll('.animate-title-words').forEach(title => {
+             document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]').forEach(title => {
                  if (title.dataset.originalHtml) {
                     title.innerHTML = title.dataset.originalHtml; // Restaura spans originais
                     title.querySelectorAll('[data-i18n]').forEach(span => {
@@ -706,17 +695,6 @@
                     });
                  }
              });
-             
-             // ATUALIZADO: Traduz H1 da Hero Section
-             if(heroTitle && heroTitle.dataset.originalHtml) {
-                 heroTitle.innerHTML = heroTitle.dataset.originalHtml; // Restaura spans
-                 heroTitle.querySelectorAll('[data-i18n]').forEach(span => {
-                     const key = span.getAttribute('data-i18n');
-                     if (currentTranslations[key] !== undefined) {
-                         span.textContent = currentTranslations[key];
-                     }
-                 });
-             }
 
             document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; 
 
@@ -834,11 +812,9 @@
 
         // --- Funções para Animação de Título por Palavra ---
         function splitTitleIntoWords(titleElement) {
-             const nodes = Array.from(titleElement.childNodes); // Pega nós filhos (texto e spans)
-             titleElement.innerHTML = ''; // Limpa o H2
-
-             let wordIndex = 0; // Para calcular delay
-
+             const nodes = Array.from(titleElement.childNodes); 
+             titleElement.innerHTML = ''; 
+             let wordIndex = 0; 
              nodes.forEach(node => {
                  if (node.nodeType === Node.TEXT_NODE) {
                      const text = node.textContent.trim();
@@ -850,71 +826,58 @@
                              const wordSpan = document.createElement('span');
                              wordSpan.className = 'title-word';
                              wordSpan.textContent = word + '\u00A0';
-                             wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; // Aplica delay
+                             wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; 
                              wrapperSpan.appendChild(wordSpan);
                              titleElement.appendChild(wrapperSpan);
                              wordIndex++;
                          }
                      });
                  } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
-                     // É um span (provavelmente o gradiente)
                      const wrapperSpan = document.createElement('span');
                      wrapperSpan.className = 'title-word-wrapper';
-                     
                      const wordSpan = document.createElement('span');
                      wordSpan.className = 'title-word';
-                      // Mantém o conteúdo e classes do span original DENTRO do wordSpan
                      wordSpan.innerHTML = node.innerHTML + '\u00A0'; 
-                     node.classList.forEach(cls => wordSpan.classList.add(cls)); // Copia classes como gradient-text
-                     wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; // Aplica delay
-                      
+                     node.classList.forEach(cls => wordSpan.classList.add(cls)); 
+                     wordSpan.style.transitionDelay = `${wordIndex * 100}ms`; 
                      wrapperSpan.appendChild(wordSpan);
                      titleElement.appendChild(wrapperSpan);
                      wordIndex++;
                  }
              });
-             // Remove último espaço adicionado
               const lastWrapper = titleElement.querySelector('.title-word-wrapper:last-child .title-word');
               if (lastWrapper) {
                  lastWrapper.textContent = lastWrapper.textContent.trim();
               }
          }
 
-
         let titleWordObserver;
          function initializeTitleWordObserver() {
-             const titlesToAnimate = document.querySelectorAll('.animate-title-words');
+             const titlesToAnimate = document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]'); // Inclui H1
              titleWordObserver = new IntersectionObserver((entries) => {
                  entries.forEach(entry => {
                      if (entry.isIntersecting) {
                          const titleElement = entry.target;
                          
-                         // Garante que o HTML original está salvo antes de dividir
-                         if (!titleElement.dataset.originalHtml) {
-                              titleElement.dataset.originalHtml = titleElement.innerHTML;
-                         }
+                         // Não reverte mais para dataset.originalHtml aqui
 
-                         splitTitleIntoWords(titleElement); // Divide em palavras AGORA
+                         splitTitleIntoWords(titleElement); // Divide o conteúdo ATUAL (já traduzido)
                          
                          const wordSpans = titleElement.querySelectorAll('.title-word');
-                         // Força reflow para garantir que a transição ocorra após o delay
-                          void titleElement.offsetWidth; 
+                          void titleElement.offsetWidth; // Reflow
                           
                          wordSpans.forEach(span => {
                              span.classList.add('is-visible');
                          });
 
-                         titleWordObserver.unobserve(titleElement); // Anima apenas uma vez
+                         titleWordObserver.unobserve(titleElement); 
                      }
                  });
              }, { threshold: 0.2 }); 
 
              titlesToAnimate.forEach(title => {
                  // Reset inicial antes de observar
-                  if(title.dataset.originalHtml) {
-                      title.innerHTML = title.dataset.originalHtml; // Restaura HTML original
-                  }
-                  // Garante que spans internos (se recriados) comecem invisíveis
+                  // Não reverte mais para dataset.originalHtml aqui
                    title.querySelectorAll('.title-word').forEach(span => {
                        span.classList.remove('is-visible');
                        span.style.opacity = '0';
