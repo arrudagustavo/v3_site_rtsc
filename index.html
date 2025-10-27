@@ -86,8 +86,6 @@
         .glow-gold { 
             position: absolute; inset: 0; border-radius: 0.75rem; 
             background: linear-gradient(to right bottom, rgba(237, 199, 124, 0.2), rgba(141, 109, 62, 0.2)); 
-            /* ATUALIZADO: Removido box-shadow padrão */
-            /* box-shadow: 0 0 15px 5px rgba(237, 199, 124, 0.3); */
             transform: translateZ(10px); 
             transition: box-shadow 0.3s ease;
         }
@@ -104,6 +102,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease; 
+            will-change: transform, opacity; /* Otimização de GPU */
         }
         .animate-card-on-scroll.is-visible {
             opacity: 1;
@@ -140,10 +139,18 @@
         }
 
         /* Estilos para Animação de Título por Palavra */
+        .animate-title-words, h1[data-i18n-ref="hero_title_structure"] {
+            opacity: 0;
+        }
+        .animate-title-words.is-visible, h1[data-i18n-ref="hero_title_structure"].is-visible {
+            opacity: 1;
+        }
+        
         .title-word-wrapper {
             display: inline-block; 
             overflow: hidden; 
-            vertical-align: bottom; 
+            vertical-align: baseline; 
+            padding-bottom: 0.4em; /* Espaço para 'g' e 'y' */
         }
         .title-word {
             display: inline-block;
@@ -151,16 +158,17 @@
             transform: translateX(100%); 
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
             will-change: opacity, transform; 
-            margin-right: 0.25em; /* Ajuste fino do espaço */
+            margin-right: 0.25em; 
         }
-         /* Garante que o espaço seja adicionado apenas entre palavras, não no final */
         .title-word-wrapper:last-child .title-word {
              margin-right: 0;
         }
-
         .title-word.is-visible {
             opacity: 1;
             transform: translateX(0);
+        }
+        #about-video-anim-container {
+             will-change: transform, opacity;
         }
     </style>
 </head>
@@ -205,8 +213,8 @@
         <div class="absolute inset-0 bg-primary-bg/50 z-0"></div>
         <div id="hero-scroll-mask" class="absolute inset-0 bg-primary-bg z-10 pointer-events-none" style="opacity: 0;"></div>
         <div id="hero-text-content" class="relative z-15 container mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
-            <!-- ATUALIZADO: H1 dividido em spans para gradiente e tradução -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-8" data-i18n-ref="hero_title_structure">
+            <!-- ATUALIZADO: Adicionada classe w-full -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black mb-8 animate-title-words text-center w-full" data-i18n-ref="hero_title_structure">
                 <span data-i18n="hero_title_p1">Transformando </span>
                 <span class="gradient-text" data-i18n="hero_title_p2">Visões</span>
                 <span data-i18n="hero_title_p3"> em </span>
@@ -290,7 +298,7 @@
                  <div id="about-video-anim-container" 
                       class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 scale-0 rotate-0 opacity-0 transition-transform duration-500 ease-out transition-opacity duration-500 ease-out">
                     <div class="relative w-full h-full rounded-none overflow-hidden shadow-lg border-none"> 
-                        <img src="imagens/Sobre a RTSC (1).jpg" alt="Construção de prédio moderno" class="w-full h-full object-cover object-top">
+                        <img src="imagens/Sobre a RTSC (1).jpg" alt="Construção de prédio moderno" class="w-full h-full object-cover object-top" loading="eager">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     </div>
                  </div>
@@ -382,10 +390,10 @@
         <section id="area-atuacao" class="relative overflow-hidden py-16 md:py-24 px-4 scroll-mt-28 md:scroll-mt-20">
             <div id="area-video-container" class="absolute inset-0 z-0">
                 <video id="area-video-0" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" autoplay muted loop playsinline preload="auto"> <source src="imagens/PrivateEquity (1).mp4" type="video/mp4"> </video>
-                <video id="area-video-1" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/GestaoDeInvestimentos (1).mp4" type="video/mp4"> </video>
-                <video id="area-video-2" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/SecuritizacaoEGarantias (1).mp4" type="video/mp4"> </video>
-                <video id="area-video-3" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/Imobiliárias (1).mp4" type="video/mp4"> </video>
-                <video id="area-video-4" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="metadata"> <source src="imagens/ServicosImobiliarios (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-1" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="auto"> <source src="imagens/GestaoDeInvestimentos (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-2" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="auto"> <source src="imagens/SecuritizacaoEGarantias (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-3" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="auto"> <source src="imagens/Imobiliárias (1).mp4" type="video/mp4"> </video>
+                <video id="area-video-4" class="area-video w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0" muted loop playsinline preload="auto"> <source src="imagens/ServicosImobiliarios (1).mp4" type="video/mp4"> </video>
             </div>
             <div class="absolute inset-0 z-1 bg-primary-bg/60"></div>
             <div class="container mx-auto max-w-7xl relative z-10">
@@ -575,7 +583,7 @@
                 'hero_title_p1': 'Transformando ', 'hero_title_p2': 'Visiones', 'hero_title_p3': ' en ', 'hero_title_p4': 'Realidad.',
                 'hero_subtitle': 'Liderando el futuro del mercado inmobiliario y turístico con innovación, excelencia y crecimiento sostenible.', 'hero_button': 'CONOZCA RTSC',
                 'history_title_part1': 'Nuestra', 'history_title_part2': 'Historia',
-                'history_text': 'Nuestra historia comienza en 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas as regiones de Brasil, generando negocios inovadores y abriendo nuevas oportunidades de inversión.',
+                'history_text': 'Nuestra historia comienza em 2014 y desde entonces nunca hemos dejado de buscar oportunidades con desarrollo sostenible. Promovemos un impacto real en la economía en todas as regiones de Brasil, generando negocios inovadores y abriendo nuevas oportunidades de inversión.',
                  'numbers_title_part1': 'Números', 'numbers_title_part2': 'de RTSC',
                 'count_assets_value': '+10 mil M', 'count_assets_desc': 'en activos bajo custodia', // mil millones
                 'count_collaborators_value': '+1.000', 'count_collaborators_desc': 'colaboradores',
@@ -583,12 +591,12 @@
                 'about_title_part1': 'Sobre', 'about_title_part2': 'RTSC',
                 'about_card1_title': 'Quiénes Somos', 'about_card1_desc': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.',
                 'about_card2_title': 'Innovación', 'about_card2_desc': 'Un centro de innovación, con vocación para acelerar negocios audaces y transformadores.',
-                'about_card3_title': 'Emprendedor', 'about_card3_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre en busca de los mejores resultados.',
-                'about_card4_title': 'Gestión', 'about_card4_desc': 'Una gestora de nuevos negocios, enfocada en la transparencia y la seguridad.',
+                'about_card3_title': 'Emprendedor', 'about_card3_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre em busca de los melhores resultados.',
+                'about_card4_title': 'Gestión', 'about_card4_desc': 'Una gestora de nuevos negócios, enfocada en la transparencia y la seguridad.',
                 'about_mobile_card_title': '...', 'about_mobile_card_desc': '...',
                 'vmg_title_part1': 'Misión, Visión y', 'vmg_title_part2': 'Valores',
                 'mission_title': 'Misión', 'mission_item1': '• Impulsar el capital humano y organizacional de forma sostenible.', 'mission_item2': '• Generar valor y desarrollo a través de inversiones en el sector inmobiliario.',
-                'vision_title': 'Visión', 'vision_item1': '• Ser el holding de referencia en inversiones inmobiliarias y turísticas.', 'vision_item2': '• Promover una transformación positiva en la economía brasileña.',
+                'vision_title': 'Visión', 'vision_item1': '• Ser el holding de referencia em inversiones inmobiliarias y turísticas.', 'vision_item2': '• Promover una transformación positiva na economia brasileña.',
                 'values_title': 'Valores', 'values_item1': '• Transparência e integridade em todas as operações.', 'values_item2': '• Innovação contínua e excelência nos resultados.',
                 'areas_title_part1': 'Áreas de', 'areas_title_part2': 'Actuación',
                 'area_carousel_title': '...', 'area_carousel_desc': '...',
@@ -600,18 +608,18 @@
                 'contact_title_part1': 'Entre en', 'contact_title_part2': 'Contacto',
                 'contact_phone_title': 'Teléfono', 'contact_email_title': 'Correo Electrónico', 'contact_address_title': 'Dirección',
                 'contact_address_text': 'Rua Estados Unidos, 406, Jardins, São Paulo, SP, Brasil, 01427-000',
-                'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos los derechos reservados.',
+                'footer_copyright': '&copy; 2025 RTSC - Premium Real Estate Investment Group. Todos los direitos reservados.',
                 'lang_pt': 'Portugués', 'lang_en': 'Inglés', 'lang_es': 'Español', 'lang_zh': 'Mandarín',
                  // Traduções dos carrosséis ES
                 'area_0_title': 'Capital Privado', 'area_0_desc': 'Estructuras que invierten en diversos emprendimientos, desde proyectos en construcción hasta operaciones consolidadas enfocadas en la industria hotelera, como hoteles, resorts y parques.',
                 'area_1_title': 'Gestión de Inversiones', 'area_1_desc': 'Vehículos que conectan el sector inmobiliario con inversores de todos los tamaños, incluyendo miles de personas físicas que ayudan a financiar el sector a través de fondos inmobiliarios.',
-                'area_2_title': 'Titulización y Garantías', 'area_2_desc': 'Soluciones financieras innovadoras que estructuran y garantizan operaciones inmobiliarias, facilitando el acceso al crédito y viabilizando nuevos proyectos.',
+                'area_2_title': 'Titulización y Garantías', 'area_2_desc': 'Soluciones financieras inovadoras que estructuran y garantizan operaciones inmobiliarias, facilitando el acceso ao crédito y viabilizando novos projetos.',
                 'area_3_title': 'Inmobiliarias', 'area_3_desc': 'Empresas que conectan a emprendedores con fuentes de financiación inmobiliaria alternativas, permitiendo que los proyectos se conviertan en realidad.',
                 'area_4_title': 'Servicios Inmobiliarios', 'area_4_desc': 'Nuestra actuación es amplia. La cartera de empresas participadas incluye muchos otros segmentos vinculados al universo inmobiliario y turístico.',
-                'about_mobile_0_title': 'Quiénes Somos', 'about_mobile_0_desc': 'Un holding que reúne empresas que operan en diversas áreas, con foco en el turismo.',
-                'about_mobile_1_title': 'Innovación', 'about_mobile_1_desc': 'Un centro de innovación, con vocación para acelerar negocios audaces y transformadores.',
-                'about_mobile_2_title': 'Emprendedor', 'about_mobile_2_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre en busca de los mejores resultados.',
-                'about_mobile_3_title': 'Gestión', 'about_mobile_3_desc': 'Una gestora de nuevos negocios, enfocada en la transparencia y la seguridad.',
+                'about_mobile_0_title': 'Quiénes Somos', 'about_mobile_0_desc': 'Un holding que reúne empresas que operan en diversas áreas, com foco en el turismo.',
+                'about_mobile_1_title': 'Innovación', 'about_mobile_1_desc': 'Un centro de innovación, con vocação para acelerar negocios audaces y transformadores.',
+                'about_mobile_2_title': 'Emprendedor', 'about_mobile_2_desc': 'Un grupo emprendedor pionero, explorador, versátil, siempre em busca de los melhores resultados.',
+                'about_mobile_3_title': 'Gestión', 'about_mobile_3_desc': 'Una gestora de nuevos negócios, enfocada en la transparencia y la seguridad.',
             },
             'zh': { /* Todas as chaves em Mandarim */
                 'menu_who_we_are': '关于我们', 'menu_area': '业务领域', 'menu_media': '媒体报道', 'menu_contact': '联系方式',
@@ -666,7 +674,7 @@
             const currentTranslations = translations[lang];
             if (!currentTranslations) return; // Idioma não encontrado
 
-            // Salva o HTML original dos títulos antes de traduzir/animar
+            // Salva o HTML original dos títulos se ainda não foi salvo
             document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]').forEach(title => {
                  if (!title.dataset.originalHtml) { // Salva apenas na primeira vez
                     title.dataset.originalHtml = title.innerHTML; 
@@ -678,24 +686,11 @@
                 const key = element.getAttribute('data-i18n');
                 if (currentTranslations[key] !== undefined && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
                     element.innerHTML = currentTranslations[key]; 
-                } else if (!key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
+                } else if (!currentTranslations[key] && !key.startsWith('area_carousel_') && !key.startsWith('about_mobile_') && !element.closest('.animate-title-words') && !element.closest('h1[data-i18n-ref="hero_title_structure"]')) {
                      // console.warn(`Chave de tradução não encontrada para '${key}' no idioma '${lang}'`);
                  }
             });
             
-             // Traduz especificamente os títulos que serão animados, restaurando a estrutura original antes
-             document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]').forEach(title => {
-                 if (title.dataset.originalHtml) {
-                    title.innerHTML = title.dataset.originalHtml; // Restaura spans originais
-                    title.querySelectorAll('[data-i18n]').forEach(span => {
-                         const key = span.getAttribute('data-i18n');
-                         if (currentTranslations[key] !== undefined) {
-                             span.textContent = currentTranslations[key]; // Traduz o texto dentro do span
-                         }
-                    });
-                 }
-             });
-
             document.documentElement.lang = lang.startsWith('zh') ? 'zh-CN' : lang; 
 
             const currentLangLabel = document.getElementById('current-lang-label');
@@ -704,7 +699,9 @@
             }
             updateCarouselContent(lang);
             updateAboutCarouselContent(lang);
-            resetAndObserveTitles(); // Reanima títulos com novo texto/estrutura
+            
+            // ATUALIZADO: Chama resetAndObserveTitles com o idioma
+            resetAndObserveTitles(lang); 
         }
 
         // --- Função para Definir o Idioma ---
@@ -852,14 +849,43 @@
          }
 
         let titleWordObserver;
-         function initializeTitleWordObserver() {
-             const titlesToAnimate = document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]'); // Inclui H1
+         // ATUALIZADO: Passa o idioma para a função
+         function initializeTitleWordObserver(lang) {
+             const currentTranslations = translations[lang];
+             if (!currentTranslations) return;
+
+             const titlesToAnimate = document.querySelectorAll('.animate-title-words, h1[data-i18n-ref="hero_title_structure"]'); 
+             
+             // ATUALIZADO: Restaura o HTML original e DEPOIS traduz os spans
+             titlesToAnimate.forEach(title => {
+                 // ATUALIZADO: Limpa apenas os wrappers de animação, se existirem
+                 const wrappers = title.querySelectorAll('.title-word-wrapper');
+                 if (wrappers.length > 0) {
+                    // Se já foi animado, restaura o HTML original para retraduzir
+                    if(title.dataset.originalHtml) {
+                         title.innerHTML = title.dataset.originalHtml;
+                    }
+                 } else if (!title.dataset.originalHtml) {
+                     // Salva se for a primeira vez
+                     title.dataset.originalHtml = title.innerHTML; 
+                 }
+                 
+                 // Agora, traduz o HTML restaurado
+                 title.querySelectorAll('[data-i18n]').forEach(span => {
+                     const key = span.getAttribute('data-i18n');
+                     if (currentTranslations[key] !== undefined) {
+                         span.textContent = currentTranslations[key]; // Traduz o texto dentro do span
+                     }
+                 });
+             });
+
              titleWordObserver = new IntersectionObserver((entries) => {
                  entries.forEach(entry => {
                      if (entry.isIntersecting) {
                          const titleElement = entry.target;
                          
-                         // Não reverte mais para dataset.originalHtml aqui
+                         // ATUALIZADO: Adiciona classe 'is-visible' ao H2/H1
+                         titleElement.classList.add('is-visible');
 
                          splitTitleIntoWords(titleElement); // Divide o conteúdo ATUAL (já traduzido)
                          
@@ -875,23 +901,18 @@
                  });
              }, { threshold: 0.2 }); 
 
+             // ATUALIZADO: Loop de observação movido para cá
              titlesToAnimate.forEach(title => {
-                 // Reset inicial antes de observar
-                  // Não reverte mais para dataset.originalHtml aqui
-                   title.querySelectorAll('.title-word').forEach(span => {
-                       span.classList.remove('is-visible');
-                       span.style.opacity = '0';
-                       span.style.transform = 'translateX(100%)';
-                   });
                  titleWordObserver.observe(title);
              });
          }
          
-         function resetAndObserveTitles() {
+         // ATUALIZADO: Passa o idioma para a inicialização
+         function resetAndObserveTitles(lang = localStorage.getItem('rtsc_lang') || 'pt') {
              if (titleWordObserver) {
-                 titleWordObserver.disconnect();
+                 titleWordObserver.disconnect(); 
              }
-             initializeTitleWordObserver(); // Re-inicializa
+             initializeTitleWordObserver(lang); // Re-inicializa com o idioma correto
          }
 
 
@@ -941,8 +962,8 @@
                  cardObserver.observe(card);
              });
 
-             // Inicializa observer dos títulos
-             initializeTitleWordObserver();
+             // Inicializa observer dos títulos (será chamado novamente por setLanguage)
+             initializeTitleWordObserver(localStorage.getItem('rtsc_lang') || 'pt');
 
 
             // Inicialização de Idioma
@@ -971,4 +992,3 @@
     </script>
 </body>
 </html>
-
